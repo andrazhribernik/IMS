@@ -38,4 +38,19 @@ public class ImageManagement {
         System.out.println(result.size());
         return result;
     }
+    
+    public Image getImageById(String idImage){
+        Integer imageId=0;
+        try{
+            imageId = Integer.valueOf(idImage);
+        }
+        catch(Exception e){
+            return null;
+        }
+        ArrayList<Image> images = (ArrayList<Image>) em.createNamedQuery("Image.findByIdImage").setParameter("idImage", imageId).getResultList();
+        if(images.size() == 0){
+            return null;
+        }
+        return images.get(0);
+    }
 }

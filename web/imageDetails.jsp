@@ -29,35 +29,34 @@ and open the template in the editor.
             </div>
         </nav>
         <div class="row">
-        <% 
-            ImageManagement im = new ImageManagement();
-            List<Image> images = im.getAllImages();
-            
-            for(int i=0; i<images.size(); i++){
-                if(i%3==0){
-        %>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <a href="imageDetails.jsp?imageId=<%=images.get(i).getIdImage() %>">
-                    <img width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin" />
-                </a>
-            </div>
-        <%
-                }
-                else{
-                 %>
-           
-            <div class="col-md-3 col-md-offset-1">
-                <a href="imageDetails.jsp?imageId=<%=images.get(i).getIdImage() %>">
-                    <img width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin" />
-                </a>
-            </div>
-        <%   
-                }
+            <div class="col-md-12 text-center">
+        <%  
+            String idImage="";
+            try{
+                idImage =request.getParameter("imageId");
             }
-        %>
+            catch(Exception e){
+                idImage = null;
+            }
+            ImageManagement im = new ImageManagement();
+            Image currentImage = im.getImageById(idImage);
+            if(currentImage == null){
+            %>
+                <div class="alert alert-danger">Wrong parameter.</div>
             
+            <%
+            }
+            else{
+        %>
+        
+                <img src="GetImage?imageId=<%=currentImage.getIdImage()%>&size=600"  class="img-thumbnail" />
+                
+            <%  
+                }
+            %>
+            </div>
         </div>
+            
+
     </body>
 </html>

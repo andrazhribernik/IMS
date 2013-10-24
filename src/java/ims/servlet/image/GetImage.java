@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp.servlet.image;
+package ims.servlet.image;
 
 import ims.entity.Image;
 import java.awt.image.BufferedImage;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package imp.servlet;
+package ims.servlet;
 
 import ims.entity.Category;
 import ims.entity.Image;

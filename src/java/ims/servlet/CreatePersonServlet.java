@@ -28,7 +28,7 @@
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package imp.servlet;
+package ims.servlet;
 
 import ims.entity.Category;
 import ims.entity.Role;
