@@ -28,7 +28,7 @@ and open the template in the editor.
                 </ul>
             </div>
         </nav>
-        <div class="row">
+        <div class="row text-center">
         <% 
             ImageManagement im = new ImageManagement();
             List<Image> images = im.getAllImages();
@@ -37,7 +37,7 @@ and open the template in the editor.
                 if(i%3==0){
         %>
         </div>
-        <div class="row">
+        <div class="row text-center">
             <div class="col-md-3">
                 <a href="imageDetails.jsp?imageId=<%=images.get(i).getIdImage() %>">
                     <img width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin" />

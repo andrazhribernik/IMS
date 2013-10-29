@@ -50,6 +50,17 @@ and open the template in the editor.
         %>
         
                 <img src="GetImage?imageId=<%=currentImage.getIdImage()%>&size=600"  class="img-thumbnail" />
+                <br>
+                <br>
+                <form class="form-inline" role="form" action="./GetImage" method="POST">
+                    <div class="form-group">
+                        <label class="sr-only" for="password">Password to access full image</label>
+                        <input type="password" class="form-control" name="imagePassword" id="password" placeholder="Enter password" />
+                        <input type="hidden" class="form-control" name="imageId" value="<%=currentImage.getIdImage() %>"  />
+                    </div>
+                    <button type="submit" class="btn btn-default">Get image</button>
+                </form>
+                
                 
             <%  
                 }

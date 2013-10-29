@@ -53,24 +53,8 @@ public class GetImage extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        //request paremeter should have 2 parameters: image id and image size.
-        String imageId = request.getParameter("imageId");
-        Integer imageIdInt = 1;
-        //if GET paramter imageId is not set, we throw an exception
-        if(imageId == null){
-            throw new ServletException("Parameter imageId is not set");
-        }
-        try{
-            imageIdInt = Integer.valueOf(imageId);
-        }
-        catch(Exception e){
-            throw new ServletException("Wrong type parameter imageId.");
-        }
-        
+    
+    public Image getImageFromId(int imageId) throws ServletException{
         Image img;
         assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
@@ -81,7 +65,7 @@ public class GetImage extends HttpServlet {
             //Since the em is created inside a transaction, it is associsated with 
             //the transaction
             em = emf.createEntityManager();
-            ArrayList<Image> images = (ArrayList<Image>) em.createNamedQuery("Image.findByIdImage").setParameter("idImage", imageIdInt).getResultList();
+            ArrayList<Image> images = (ArrayList<Image>) em.createNamedQuery("Image.findByIdImage").setParameter("idImage", imageId).getResultList();
             if(images.size() == 0){
                 throw new ServletException("Invalid imageId value.");
             }
@@ -102,6 +86,28 @@ public class GetImage extends HttpServlet {
                 em.close();
             }
         }
+        return img;
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        //request paremeter should have 2 parameters: image id and image size.
+        String imageId = request.getParameter("imageId");
+        Integer imageIdInt = 1;
+        //if GET paramter imageId is not set, we throw an exception
+        if(imageId == null){
+            throw new ServletException("Parameter imageId is not set");
+        }
+        try{
+            imageIdInt = Integer.valueOf(imageId);
+        }
+        catch(Exception e){
+            throw new ServletException("Wrong type parameter imageId.");
+        }
+        
+        Image img = this.getImageFromId(imageIdInt);
         
         
         //Source code for returning image is from http://stackoverflow.com/questions/2979758/writing-image-to-servlet-response-with-best-performance
@@ -159,6 +165,63 @@ public class GetImage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //request paremeter should have 2 parameters: image id and image size.
+        String imageId = request.getParameter("imageId");
+        Integer imageIdInt = 1;
+        //if GET paramter imageId is not set, we throw an exception
+        if(imageId == null){
+            throw new ServletException("Parameter imageId is not set");
+        }
+        String userPassword = request.getParameter("imagePassword");
+        if(userPassword == null){
+            throw new ServletException("Parameter imagePassword is not set");
+        } 
+        
+        try{
+            imageIdInt = Integer.valueOf(imageId);
+        }
+        catch(Exception e){
+            throw new ServletException("Wrong type parameter imageId.");
+        }
+        
+        Image img = this.getImageFromId(imageIdInt);
+        if(!img.getPassword().equals(userPassword)){
+            throw new ServletException("Password parameter is wrong for selected image");
+        }
+               
+        //Source code for returning image is from http://stackoverflow.com/questions/2979758/writing-image-to-servlet-response-with-best-performance
+        
+        
+        
+        ServletContext cntx= getServletContext();
+        // Get the absolute path of the image
+        //image path is set regarding imageId and imageSize
+        String imagePath = "Images/original/"+img.getName();
+        System.out.println(imagePath);
+        String filename = cntx.getRealPath(imagePath);
+        String mime = cntx.getMimeType(filename);
+        if (mime == null) {
+          response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+          return;
+        }
+
+        //response.setContentType(mime);
+        response.setContentType("binary/octet-stream");
+        File file = new File(filename);
+        response.setContentLength((int)file.length());
+
+        FileInputStream in = new FileInputStream(file);
+        OutputStream out = response.getOutputStream();
+
+        // Copy the contents of the file to the output stream
+         byte[] buf = new byte[1024];
+         int count = 0;
+         while ((count = in.read(buf)) >= 0) {
+           out.write(buf, 0, count);
+        }
+        out.close();
+        in.close();
+        
     }
 
     /**
