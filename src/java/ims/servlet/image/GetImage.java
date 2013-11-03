@@ -5,6 +5,9 @@
 package ims.servlet.image;
 
 import ims.entity.Image;
+import ims.entity.User;
+import ims.management.ImageManagement;
+import ims.management.UserManagement;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -13,14 +16,22 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.rmi.ServerException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -55,16 +66,18 @@ public class GetImage extends HttpServlet {
      */
     
     public Image getImageFromId(int imageId) throws ServletException{
+        
         Image img;
-        assert emf != null;  //Make sure injection went through correctly.
+        //assert emf != null;  //Make sure injection went through correctly.
         EntityManager em = null;
+
         try {            
             //begin a transaction
             //utx.begin();
             //create an em. 
             //Since the em is created inside a transaction, it is associsated with 
             //the transaction
-            em = emf.createEntityManager();
+            em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
             ArrayList<Image> images = (ArrayList<Image>) em.createNamedQuery("Image.findByIdImage").setParameter("idImage", imageId).getResultList();
             if(images.size() == 0){
                 throw new ServletException("Invalid imageId value.");
@@ -186,9 +199,39 @@ public class GetImage extends HttpServlet {
         
         Image img = this.getImageFromId(imageIdInt);
         if(!img.getPassword().equals(userPassword)){
-            throw new ServletException("Password parameter is wrong for selected image");
+            //throw new ServletException("Password parameter is wrong for selected image");
+            response.sendRedirect("./imageDetails.jsp?pass=true&imageId="+imageId);
+            return;
         }
-               
+
+        
+        UserManagement um = new UserManagement();
+        //at that moment we have only one user with username user1
+        User currentUser = null;
+        try {
+            currentUser = um.getUserByUsername("user1");
+        } catch (Exception ex) {
+            Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(currentUser == null){
+            //User not exist
+            throw new ServerException("Error.");
+        }
+        
+        ImageManagement im = new ImageManagement();
+        Image boughtImage = im.getImageById(imageId);
+        
+        EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
+        em.getTransaction().begin();
+        boughtImage.getUserSet().add(currentUser);
+        em.merge(boughtImage);
+        em.getTransaction().commit();
+        em.close();
+        System.out.println(currentUser.getImageSet().size());
+        response.sendRedirect("./myImages.jsp");
+        return;
+        
+        /*       
         //Source code for returning image is from http://stackoverflow.com/questions/2979758/writing-image-to-servlet-response-with-best-performance
         
         
@@ -221,7 +264,7 @@ public class GetImage extends HttpServlet {
         }
         out.close();
         in.close();
-        
+        */
     }
 
     /**

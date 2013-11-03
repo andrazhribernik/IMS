@@ -5,15 +5,16 @@
 package ims.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -33,8 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findByIdUser", query = "SELECT u FROM User u WHERE u.idUser = :idUser"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")})
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,17 +43,19 @@ public class User implements Serializable {
     @Basic(optional = false)
     @Column(name = "idUser")
     private Integer idUser;
-    @Size(max = 255)
-    @Column(name = "password")
-    private String password;
-    @Size(max = 255)
+    @Size(max = 45)
     @Column(name = "username")
     private String username;
+    @Size(max = 45)
+    @Column(name = "password")
+    private String password;
+    @ManyToMany(mappedBy = "userSet")
+    private Set<Image> imageSet;
     @JoinColumn(name = "Role_idRole", referencedColumnName = "idRole")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     private Role roleidRole;
-    @OneToMany(mappedBy = "usersidUsers", fetch = FetchType.LAZY)
-    private List<Image> imageList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "useridUser")
+    private Set<Image> imageSet1;
 
     public User() {
     }
@@ -69,6 +72,14 @@ public class User implements Serializable {
         this.idUser = idUser;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -77,12 +88,13 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
+    @XmlTransient
+    public Set<Image> getImageSet() {
+        return imageSet;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setImageSet(Set<Image> imageSet) {
+        this.imageSet = imageSet;
     }
 
     public Role getRoleidRole() {
@@ -94,12 +106,12 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    public List<Image> getImageList() {
-        return imageList;
+    public Set<Image> getImageSet1() {
+        return imageSet1;
     }
 
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+    public void setImageSet1(Set<Image> imageSet1) {
+        this.imageSet1 = imageSet1;
     }
 
     @Override
@@ -124,7 +136,7 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "enterprise.web_jpa_war.entity.User[ idUser=" + idUser + " ]";
+        return "ims.entity.User[ idUser=" + idUser + " ]";
     }
     
 }

@@ -4,33 +4,28 @@
  */
 package ims.servlet;
 
-import ims.entity.Category;
 import ims.entity.Image;
-import ims.entity.Role;
-import ims.entity.User;
+import ims.management.ImageManagement;
+import ims.management.TemplatingManagement;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceUnit;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.UserTransaction;
 
 /**
  *
  * @author andrazhribernik
  */
-@WebServlet(name = "FillData", urlPatterns = {"/FillData"})
-public class FillData extends HttpServlet {
-    
-    
+@WebServlet(name = "PayPalReturnServlet", urlPatterns = {"/conformationOfPurchase"})
+public class PayPalReturnServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -44,65 +39,37 @@ public class FillData extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-              
-        
-        EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
-        //persist the person entity
-        
-        em.getTransaction().begin();
-        try{
-            Role r = new Role();
-            r.setName("user");
-            em.persist(r);
-
-            r = new Role();
-            r.setName("admin");
-            em.persist(r);
-
-            Category c = new Category();
-            c.setCategoryName("nature");
-            em.persist(c);
-
-
-            User u = new User();
-            u.setRoleidRole(r);
-            u.setUsername("admin");
-            u.setPassword("admin");
-            em.persist(u);
-
-            for(int i=1; i<=10; i++){
-                Image img = new Image();
-                img.setCategoryidCategory(c);
-                img.setDate(new Date());
-                img.setName("image"+String.valueOf(i)+".jpg");
-                img.setUseridUser(u);
-                img.setPassword("password"+String.valueOf(i));
-
-                em.persist(img);
-            }
-            em.getTransaction().commit();
-        }
-        catch(Exception e){
-            em.getTransaction().rollback();
-        }
-        finally {
-            em.close();
-        }
+        String sessionId = request.getParameter("tx");
+        String itemId = request.getParameter("item_number");
         
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet FillData</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Successfully ful database.</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        } finally {            
+            if(sessionId == null || itemId == null){
+                String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                return;
+            }
+            ImageManagement im = new ImageManagement();
+            Image currentImage = im.getImageById(itemId);
+            if(currentImage == null){
+                String message = "<div class=\"alert alert-danger\">Image does not exist.</div>";
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                return;
+            }
+            String message = "";
+            message += "<p>Your password for purchased image is <strong>";
+            message += currentImage.getPassword();
+            message += ".</strong></p>";
+            message += "<a href=\"imageDetails.jsp?imageId="+currentImage.getIdImage()+"\">Back to image</a>";
+            
+            out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+            
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }  
+        finally {            
             out.close();
         }
     }

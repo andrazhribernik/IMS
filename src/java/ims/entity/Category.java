@@ -5,11 +5,11 @@
 package ims.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,11 +39,11 @@ public class Category implements Serializable {
     @Basic(optional = false)
     @Column(name = "idCategory")
     private Integer idCategory;
-    @Size(max = 255)
+    @Size(max = 45)
     @Column(name = "categoryName")
     private String categoryName;
-    @OneToMany(mappedBy = "categoryidCategory", fetch = FetchType.LAZY)
-    private List<Image> imageList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryidCategory")
+    private Set<Image> imageSet;
 
     public Category() {
     }
@@ -69,12 +69,12 @@ public class Category implements Serializable {
     }
 
     @XmlTransient
-    public List<Image> getImageList() {
-        return imageList;
+    public Set<Image> getImageSet() {
+        return imageSet;
     }
 
-    public void setImageList(List<Image> imageList) {
-        this.imageList = imageList;
+    public void setImageSet(Set<Image> imageSet) {
+        this.imageSet = imageSet;
     }
 
     @Override
@@ -99,7 +99,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "enterprise.web_jpa_war.entity.Category[ idCategory=" + idCategory + " ]";
+        return "ims.entity.Category[ idCategory=" + idCategory + " ]";
     }
     
 }

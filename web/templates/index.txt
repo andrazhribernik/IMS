@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>IMS</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="/IMS_CS3510/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/IMS_CS3510/css/myCss.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">  
+                <a class="navbar-brand">Image management system </a>
+            </div>
+            <div class="">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.jsp">Images</a></li>
+                    <li><a href="#">My images</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                     <li><a href="#">User1</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <!--TemplateContent-->
+            </div> 
+        </div>
+    </body>
+</html>

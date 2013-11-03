@@ -5,11 +5,11 @@
 package ims.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +17,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -39,17 +40,24 @@ public class Role implements Serializable {
     @Basic(optional = false)
     @Column(name = "idRole")
     private Integer idRole;
-    @Size(max = 255)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "roleidRole", fetch = FetchType.LAZY)
-    private List<User> userList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "roleidRole")
+    private Set<User> userSet;
 
     public Role() {
     }
 
     public Role(Integer idRole) {
         this.idRole = idRole;
+    }
+
+    public Role(Integer idRole, String name) {
+        this.idRole = idRole;
+        this.name = name;
     }
 
     public Integer getIdRole() {
@@ -69,12 +77,12 @@ public class Role implements Serializable {
     }
 
     @XmlTransient
-    public List<User> getUserList() {
-        return userList;
+    public Set<User> getUserSet() {
+        return userSet;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUserSet(Set<User> userSet) {
+        this.userSet = userSet;
     }
 
     @Override
@@ -99,7 +107,7 @@ public class Role implements Serializable {
 
     @Override
     public String toString() {
-        return "enterprise.web_jpa_war.entity.Role[ idRole=" + idRole + " ]";
+        return "ims.entity.Role[ idRole=" + idRole + " ]";
     }
     
 }

@@ -1,6 +1,8 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Set"%>
+<%@page import="ims.management.UserManagement"%>
 <%@page import="ims.entity.Image"%>
-<%@page import="java.util.List"%>
-<%@page import="ims.management.ImageManagement"%>
+
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.
@@ -12,9 +14,12 @@ and open the template in the editor.
         <jsp:include page="templates/navigationBar.jsp" />
         <div class="row text-center">
         <% 
-            ImageManagement im = new ImageManagement();
-            List<Image> images = im.getAllImages();
-            
+            //only because we haven't implemented log in, yet
+            session.setAttribute( "username", new String("user1") );
+            UserManagement um = new UserManagement();
+            Set<Image> imagesSet = um.getUserImages((String)session.getAttribute("username"));
+            ArrayList<Image> images = new ArrayList<Image>();
+            images.addAll(imagesSet);
             for(int i=0; i<images.size(); i++){
                 if(i%3==0){
         %>
