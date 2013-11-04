@@ -6,6 +6,7 @@ package ims.servlet;
 
 import ims.entity.Image;
 import ims.management.ImageManagement;
+import ims.management.PayPalAPIManeger;
 import ims.management.TemplatingManagement;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import sun.net.www.http.HttpClient;
 
 /**
  *
@@ -39,24 +41,33 @@ public class PayPalReturnServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String sessionId = request.getParameter("tx");
+        String transactionId = request.getParameter("tx");
         String itemId = request.getParameter("item_number");
         
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            if(sessionId == null || itemId == null){
+            if(transactionId == null || itemId == null){
                 String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
                 out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
                 return;
             }
+            
             ImageManagement im = new ImageManagement();
             Image currentImage = im.getImageById(itemId);
             if(currentImage == null){
-                String message = "<div class=\"alert alert-danger\">Image does not exist.</div>";
+                String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
                 out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
                 return;
             }
+            
+            PayPalAPIManeger ppam = new PayPalAPIManeger();
+            if(!ppam.checkTransactionWithItem(transactionId, String.valueOf(currentImage.getIdImage()))){
+                String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                return;
+            }
+            
             String message = "";
             message += "<p>Your password for purchased image is <strong>";
             message += currentImage.getPassword();
