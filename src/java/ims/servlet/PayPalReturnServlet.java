@@ -14,11 +14,15 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.annotation.Resource;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.UserTransaction;
 import sun.net.www.http.HttpClient;
 
 /**
@@ -27,7 +31,14 @@ import sun.net.www.http.HttpClient;
  */
 @WebServlet(name = "PayPalReturnServlet", urlPatterns = {"/conformationOfPurchase"})
 public class PayPalReturnServlet extends HttpServlet {
-
+    
+    @PersistenceUnit
+    //The emf corresponding to 
+    private EntityManagerFactory emf;  
+    
+    @Resource
+    private UserTransaction utx;
+    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
