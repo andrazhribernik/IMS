@@ -28,6 +28,12 @@ import sun.net.www.http.HttpClient;
 /**
  *
  * @author andrazhribernik
+ * 
+ * This servlet provides the password for purchased image.
+ *
+ * <br />
+ * This servlet has the same behaviour for GET and POST request.
+ * 
  */
 @WebServlet(name = "PayPalReturnServlet", urlPatterns = {"/conformationOfPurchase"})
 public class PayPalReturnServlet extends HttpServlet {
@@ -40,10 +46,15 @@ public class PayPalReturnServlet extends HttpServlet {
     private UserTransaction utx;
     
     /**
+     * 
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.
      *
+     * This servlet return html page. If request parameters are valid, user 
+     * gets a password for accessing purchased image, otherwise user get message 
+     * "Wrong parameters"
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -52,6 +63,7 @@ public class PayPalReturnServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        //PayPal return request has two parameters: transaction id and item_id
         String transactionId = request.getParameter("tx");
         String itemId = request.getParameter("item_number");
         

@@ -26,6 +26,7 @@ import javax.transaction.UserTransaction;
 /**
  *
  * @author andrazhribernik
+ * This class is used only for development purposes to fulfill a database.
  */
 @WebServlet(name = "FillData", urlPatterns = {"/FillData"})
 public class FillData extends HttpServlet {

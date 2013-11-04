@@ -24,6 +24,10 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author andrazhribernik
+ * 
+ * This servlet is made to connect user with purchased image.
+ * <br/>
+ * This servlet has the same behaviour for GET and POST request
  */
 @WebServlet(name = "AddImageToMyImage", urlPatterns = {"/AddImageToMyImage"})
 public class AddImageToMyImage extends HttpServlet {
@@ -33,6 +37,15 @@ public class AddImageToMyImage extends HttpServlet {
      * <code>GET</code> and
      * <code>POST</code> methods.
      *
+     * Process request requires two request parameters (imageId, password).
+     * <br/>
+     * If the password is correct for particular image, then user gets access to
+     * full-size image with that imageId. In that case user is redirected to their
+     * image gallery.
+     * <br />
+     * If the password and imageId do not match, user is redirected to imageDetails
+     * page with error message.
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
