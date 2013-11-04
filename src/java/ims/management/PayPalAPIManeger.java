@@ -32,6 +32,7 @@ public class PayPalAPIManeger {
     private final static String SIGNATURE = "AFcWxV21C7fd0v3bYYYRCpSSRl31Ab33ZAHJIBQZeIG9T5kJFybReg-v";
     private final static String METHOD = "GetTransactionDetails";
     private final static String VERSION = "94";
+    private final static String AMOUNT = "1%2e00";
     
     public boolean checkTransactionWithItem(String transaction, String itemId){
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -51,31 +52,40 @@ public class PayPalAPIManeger {
             entity.getContent().read(byteContent, 0, (int)entity.getContentLength());
             String content = new String(byteContent);
             String[] values = content.split("&");
+            boolean valid = false;
             for(int i=0; i<values.length; i++){
                 String[] splitValue = values[i].split("=");
                 if(splitValue[0].equals("L_NUMBER0")){
                     System.out.println(splitValue[1]);
-                    if(splitValue[1].equals(itemId)){
-                        return true;
+                    if(!splitValue[1].equals(itemId)){
+                        return false;
+                    }
+                    else{
+                        valid = true;
+                    }
+                }
+                if(splitValue[0].equals("AMT")){
+                    if(!splitValue[1].equals(AMOUNT)){
+                        return false;
                     }
                 }
             }
             
+            
             response.close();
+            return valid;
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(PayPalAPIManeger.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(PayPalAPIManeger.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
+        } 
         
         return false;
     }
     
     public static void main(String[] args){
         PayPalAPIManeger ppm = new PayPalAPIManeger();
-        ppm.checkTransactionWithItem("8D022885V9227494B", "1");
+        System.out.println(ppm.checkTransactionWithItem("1YV032075V8482257", "5"));
     }
     
 }
