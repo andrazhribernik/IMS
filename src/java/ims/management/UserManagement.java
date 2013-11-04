@@ -24,17 +24,15 @@ public class UserManagement {
      * Create class ImageManagement
      * 
      **/
+    private static EntityManager em;
     public UserManagement(){
         //System.out.println(emf);
-        
+        em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
     }
     
     public static User getUserByUsername(String username) throws Exception{
-        EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
-        em.getTransaction().begin();
+        em.getEntityManagerFactory().getCache().evictAll();
         List<User> images = (List<User>) em.createNamedQuery("User.findByUsername").setParameter("username", username).getResultList();
-        em.getTransaction().commit();
-        em.close();
         if(images.size() == 0){
             throw new Exception("User with that particular username does not exist.");
         }

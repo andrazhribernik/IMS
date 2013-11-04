@@ -6,6 +6,7 @@ package ims.servlet;
 
 import ims.entity.Image;
 import ims.management.ImageManagement;
+import ims.management.ImageManagement2;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -37,17 +38,18 @@ public class GalleryServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     
-    @EJB
-    ImageManagement im;
+    //@EJB ImageManagement2 im;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        /*
         List<Image> result = im.getAllImages();
 
         request.setAttribute("images", result);
         request.getRequestDispatcher("/index.jsp")
                 .forward(request, response);
+                * 
+                * */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -7,6 +7,7 @@ package ims.management;
 import ims.entity.Image;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityManager;
@@ -19,22 +20,26 @@ import javax.persistence.PersistenceUnit;
  * @author andrazhribernik
  */
 
-@Stateless
 public class ImageManagement {
     
 
-    @PersistenceContext private EntityManager em;
     
     /*
      * Create class ImageManagement
      * 
      **/
+    private EntityManager em;
+    
+    public ImageManagement(){
+        em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
+    }
     
     public List<Image> getAllImages(){
-        List result = em.createNamedQuery("Image.findAll").getResultList();
-        System.out.println(result.size());
+        em.getEntityManagerFactory().getCache().evictAll();
+        List<Image> result = em.createNamedQuery("Image.findAll").getResultList();
         return result;
     }
+    
     
     public Image getImageById(String idImage){
         Integer imageId=0;
@@ -44,6 +49,7 @@ public class ImageManagement {
         catch(Exception e){
             return null;
         }
+        em.getEntityManagerFactory().getCache().evictAll();
         ArrayList<Image> images = (ArrayList<Image>) em.createNamedQuery("Image.findByIdImage").setParameter("idImage", imageId).getResultList();
         if(images.size() == 0){
             return null;
