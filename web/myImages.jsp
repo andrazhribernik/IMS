@@ -16,8 +16,8 @@ and open the template in the editor.
         <% 
             //only because we haven't implemented log in, yet
             session.setAttribute( "username", new String("user1") );
-            UserManagement um = new UserManagement();
-            Set<Image> imagesSet = um.getUserImages((String)session.getAttribute("username"));
+            
+            Set<Image> imagesSet = (Set<Image>)request.getAttribute("images");
             ArrayList<Image> images = new ArrayList<Image>();
             images.addAll(imagesSet);
             for(int i=0; i<images.size(); i++){

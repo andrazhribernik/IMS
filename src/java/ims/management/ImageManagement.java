@@ -19,19 +19,16 @@ import javax.persistence.PersistenceUnit;
  * @author andrazhribernik
  */
 
+@Stateless
 public class ImageManagement {
     
 
-    private EntityManager em;
+    @PersistenceContext private EntityManager em;
     
     /*
      * Create class ImageManagement
      * 
      **/
-    public ImageManagement(){
-        //System.out.println(emf);
-        em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
-    }
     
     public List<Image> getAllImages(){
         List result = em.createNamedQuery("Image.findAll").getResultList();

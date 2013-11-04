@@ -9,6 +9,7 @@ import ims.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
@@ -16,21 +17,24 @@ import javax.persistence.Persistence;
  *
  * @author andrazhribernik
  */
+@Stateless
 public class UserManagement {
    
-    private EntityManager em;
     /*
      * Create class ImageManagement
      * 
      **/
     public UserManagement(){
         //System.out.println(emf);
-        em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
+        
     }
     
-    public User getUserByUsername(String username) throws Exception{
-        
+    public static User getUserByUsername(String username) throws Exception{
+        EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
+        em.getTransaction().begin();
         List<User> images = (List<User>) em.createNamedQuery("User.findByUsername").setParameter("username", username).getResultList();
+        em.getTransaction().commit();
+        em.close();
         if(images.size() == 0){
             throw new Exception("User with that particular username does not exist.");
         }
@@ -38,7 +42,7 @@ public class UserManagement {
         
     }
     
-    public Set<Image> getUserImages(String username) throws Exception{
+    public static Set<Image> getUserImages(String username) throws Exception{
         User user = getUserByUsername(username);
         return user.getImageSet();
     }

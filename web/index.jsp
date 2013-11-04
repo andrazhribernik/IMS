@@ -12,9 +12,13 @@ and open the template in the editor.
         <jsp:include page="templates/navigationBar.jsp" />
         <div class="row text-center">
         <% 
-            ImageManagement im = new ImageManagement();
-            List<Image> images = im.getAllImages();
-            
+            List<Image> images = (List<Image>)request.getAttribute("images");
+            if(images == null){
+                /*
+                ImageManagement im = new ImageManagement();
+                images = im.getAllImages();
+                * */
+            }
             for(int i=0; i<images.size(); i++){
                 if(i%3==0){
         %>

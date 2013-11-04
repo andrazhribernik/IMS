@@ -11,7 +11,7 @@
     <div class="">
         <ul class="nav navbar-nav">
             <li><a href="index.jsp">Images</a></li>
-            <li><a href="#">My images</a></li>
+            <li><a href="myImages.jsp">My images</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
              <li><a href="#">User1</a></li>
