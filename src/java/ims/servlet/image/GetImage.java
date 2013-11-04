@@ -46,13 +46,7 @@ import javax.transaction.UserTransaction;
  */
 @WebServlet(name = "GetImage", urlPatterns = {"/GetImage"})
 public class GetImage extends HttpServlet {
-    
-    @PersistenceUnit
-    //The emf corresponding to 
-    private EntityManagerFactory emf;  
-    
-    @Resource
-    private UserTransaction utx;
+   
     
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -178,17 +172,12 @@ public class GetImage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //request paremeter should have 2 parameters: image id and image size.
         String imageId = request.getParameter("imageId");
         Integer imageIdInt = 1;
         //if GET paramter imageId is not set, we throw an exception
         if(imageId == null){
             throw new ServletException("Parameter imageId is not set");
         }
-        String userPassword = request.getParameter("imagePassword");
-        if(userPassword == null){
-            throw new ServletException("Parameter imagePassword is not set");
-        } 
         
         try{
             imageIdInt = Integer.valueOf(imageId);
@@ -197,41 +186,20 @@ public class GetImage extends HttpServlet {
             throw new ServletException("Wrong type parameter imageId.");
         }
         
-        Image img = this.getImageFromId(imageIdInt);
-        if(!img.getPassword().equals(userPassword)){
-            //throw new ServletException("Password parameter is wrong for selected image");
+        //At that moment default user is user with userId = 2
+        //when we will implemet log in we will get user from session, othervise we will throw error.
+            
+        UserManagement um = new UserManagement();
+        User curUser = um.getUserById(2);
+        
+        ImageManagement im = new ImageManagement();
+        Image img = im.getImageById(imageId);
+        
+        if(!curUser.getImageSet().contains(img)){
             response.sendRedirect("./imageDetails.jsp?pass=true&imageId="+imageId);
             return;
         }
-
         
-        UserManagement um = new UserManagement();
-        //at that moment we have only one user with username user1
-        User currentUser = null;
-        try {
-            currentUser = um.getUserByUsername("user1");
-        } catch (Exception ex) {
-            Logger.getLogger(GetImage.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(currentUser == null){
-            //User not exist
-            throw new ServerException("Error.");
-        }
-        
-        ImageManagement im = new ImageManagement();
-        Image boughtImage = im.getImageById(imageId);
-        
-        EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
-        em.getTransaction().begin();
-        boughtImage.getUserSet().add(currentUser);
-        em.merge(boughtImage);
-        em.getTransaction().commit();
-        em.close();
-        System.out.println(currentUser.getImageSet().size());
-        response.sendRedirect("./myImages.jsp");
-        return;
-        
-        /*       
         //Source code for returning image is from http://stackoverflow.com/questions/2979758/writing-image-to-servlet-response-with-best-performance
         
         
@@ -239,7 +207,7 @@ public class GetImage extends HttpServlet {
         ServletContext cntx= getServletContext();
         // Get the absolute path of the image
         //image path is set regarding imageId and imageSize
-        String imagePath = "Images/original/"+img.getName();
+        String imagePath = "Images/1200/"+img.getName();
         System.out.println(imagePath);
         String filename = cntx.getRealPath(imagePath);
         String mime = cntx.getMimeType(filename);
@@ -249,10 +217,13 @@ public class GetImage extends HttpServlet {
         }
 
         //response.setContentType(mime);
-        response.setContentType("binary/octet-stream");
+        response.setContentType("application/octet-stream");
         File file = new File(filename);
         response.setContentLength((int)file.length());
 
+        // sets HTTP header
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + img.getName() + "\"");
+        
         FileInputStream in = new FileInputStream(file);
         OutputStream out = response.getOutputStream();
 
@@ -264,7 +235,7 @@ public class GetImage extends HttpServlet {
         }
         out.close();
         in.close();
-        */
+        
     }
 
     /**

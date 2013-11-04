@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  *
  * @author andrazhribernik
  */
-@Stateless
+
 public class ImageManagement2 {
 
     // Add business logic below. (Right-click in editor and choose

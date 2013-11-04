@@ -38,7 +38,7 @@ and open the template in the editor.
                 <img src="GetImage?imageId=<%=currentImage.getIdImage()%>&size=600"  class="img-thumbnail" />
                 <br>
                 <br>
-                <form class="form-inline" role="form" action="./GetImage" method="POST">
+                <form class="form-inline" role="form" action="./AddImageToMyImage" method="POST">
                     <div class="form-group">
                         <label class="sr-only" for="password">Password to access full image</label>
                         <input type="password" class="form-control" name="imagePassword" id="password" placeholder="Enter password" />

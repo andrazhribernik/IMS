@@ -26,9 +26,11 @@ and open the template in the editor.
         </div>
         <div class="row text-center">
             <div class="col-md-3">
-                <a href="imageDetails.jsp?imageId=<%=images.get(i).getIdImage() %>">
-                    <img width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin" />
-                </a>
+                <form class="form-inline" role="form" action="./GetImage" method="POST">
+                        
+                    <input type="hidden" name="imageId" value="<%=images.get(i).getIdImage() %>"  />
+                    <input type="image" width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin"  />
+                </form>
             </div>
         <%
                 }
@@ -36,9 +38,11 @@ and open the template in the editor.
                  %>
            
             <div class="col-md-3 col-md-offset-1">
-                <a href="imageDetails.jsp?imageId=<%=images.get(i).getIdImage() %>">
-                    <img width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin" />
-                </a>
+                <form class="form-inline" role="form" action="./GetImage" method="POST">
+                        
+                    <input type="hidden" name="imageId" value="<%=images.get(i).getIdImage() %>"  />
+                    <input type="image" width="300" height="188" src="GetImage?imageId=<%=images.get(i).getIdImage()%>&size=300"  class="img-rounded tumbnail-margin"  />
+                </form>
             </div>
         <%   
                 }

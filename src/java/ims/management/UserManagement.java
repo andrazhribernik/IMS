@@ -17,7 +17,6 @@ import javax.persistence.Persistence;
  *
  * @author andrazhribernik
  */
-@Stateless
 public class UserManagement {
    
     /*
@@ -30,7 +29,7 @@ public class UserManagement {
         em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
     }
     
-    public static User getUserByUsername(String username) throws Exception{
+    public User getUserByUsername(String username) throws Exception{
         em.getEntityManagerFactory().getCache().evictAll();
         List<User> images = (List<User>) em.createNamedQuery("User.findByUsername").setParameter("username", username).getResultList();
         if(images.size() == 0){
@@ -40,9 +39,13 @@ public class UserManagement {
         
     }
     
-    public static Set<Image> getUserImages(String username) throws Exception{
+    public Set<Image> getUserImages(String username) throws Exception{
         User user = getUserByUsername(username);
         return user.getImageSet();
+    }
+    
+    public User getUserById(int id){
+        return em.find(User.class, id);
     }
     
 }
