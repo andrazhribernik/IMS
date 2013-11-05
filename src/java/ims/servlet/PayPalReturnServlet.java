@@ -26,13 +26,12 @@ import javax.transaction.UserTransaction;
 import sun.net.www.http.HttpClient;
 
 /**
- *
- * @author andrazhribernik
- * 
- * This servlet provides the password for purchased image.
- *
- * <br />
+ *This servlet provides the password for purchased image.
+ * <p>
  * This servlet has the same behaviour for GET and POST request.
+ * 
+ * 
+ * @author andrazhribernik
  * 
  */
 @WebServlet(name = "PayPalReturnServlet", urlPatterns = {"/conformationOfPurchase"})
@@ -51,9 +50,21 @@ public class PayPalReturnServlet extends HttpServlet {
      * <code>GET</code> and
      * <code>POST</code> methods.
      *
-     * This servlet return html page. If request parameters are valid, user 
+     *<p> This servlet return html page. If request parameters are valid, user 
      * gets a password for accessing purchased image, otherwise user get message 
      * "Wrong parameters"
+     * 
+     * <p>
+     * Obligatory request parameters are:
+     * <ul> 
+     * <li>tx-paypal transaction id</li>
+     * <li>item_number-image number</li>
+     * </ul>
+     * 
+     * <p>First the method checks if parameters are set. After that method connects
+     * to PayPal API and check if particular transaction exists and if item_number is 
+     * the same as image number, that user is looking for. If everything is valid 
+     * html page includes password for selected image.
      * 
      * @param request servlet request
      * @param response servlet response
