@@ -41,7 +41,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
 /**
- *
+ *This servlet provides image with specified imageId.
+ * <p>
+ * Get method returns user free accessible images (sizes 300px&600px)
+ * <p>
+ * Post method returns user full size image (1200px)
+ * 
  * @author andrazhribernik
  */
 @WebServlet(name = "GetImage", urlPatterns = {"/GetImage"})
@@ -52,50 +57,30 @@ public class GetImage extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     *<p>
+     * This method return image regarding request parameters. If request parameter imageId is not set
+     * or the value does not exist, method returns ServletException. Size of image depends on
+     * request parameter size.
+     * <p>
+     * Mime type is set to Image/"imagename". This means that browser shows image
+     * in browser.
+     * <p>
+     * Obligatory request parameter is:
+     * <ul> 
+     * <li>imageId-id of image that user wants</li>
+     * </ul>
+     *  <p>
+     * Non-Obligatory request parameter is:
+     * <ul> 
+     * <li>size-image size of returned image. Default value is 300px. If you set value 
+     * size=600 you get image with 600px width, otherwise 300px.</li>
+     * </ul>
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     */
-    
-    public Image getImageFromId(int imageId) throws ServletException{
-        
-        Image img;
-        //assert emf != null;  //Make sure injection went through correctly.
-        EntityManager em = null;
-
-        try {            
-            //begin a transaction
-            //utx.begin();
-            //create an em. 
-            //Since the em is created inside a transaction, it is associsated with 
-            //the transaction
-            em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
-            ArrayList<Image> images = (ArrayList<Image>) em.createNamedQuery("Image.findByIdImage").setParameter("idImage", imageId).getResultList();
-            if(images.size() == 0){
-                throw new ServletException("Invalid imageId value.");
-            }
-            img = images.get(0);
-            
-            //commit transaction which will trigger the em to 
-            //commit newly created entity into database
-            //utx.commit();
-            
-            //Forward to ListPerson servlet to list persons along with the newly
-            //created person above
-            //request.getRequestDispatcher("ListPerson").forward(request, response);
-        } catch (Exception ex) {
-            throw new ServletException(ex);
-        } finally {
-            //close the em to release any resources held up by the persistebce provider
-            if(em != null) {
-                em.close();
-            }
-        }
-        return img;
-    }
-    
+     */    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -107,15 +92,12 @@ public class GetImage extends HttpServlet {
         if(imageId == null){
             throw new ServletException("Parameter imageId is not set");
         }
-        try{
-            imageIdInt = Integer.valueOf(imageId);
-        }
-        catch(Exception e){
+                
+        ImageManagement im = new ImageManagement();
+        Image img = im.getImageById(imageId);
+        if(img == null){
             throw new ServletException("Wrong type parameter imageId.");
         }
-        
-        Image img = this.getImageFromId(imageIdInt);
-        
         
         //Source code for returning image is from http://stackoverflow.com/questions/2979758/writing-image-to-servlet-response-with-best-performance
         
@@ -163,6 +145,24 @@ public class GetImage extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>POST</code> method.
+     * 
+     * <p>
+     * This method return image regarding request parameters. If request parameter imageId is not set
+     * or the value does not exist, method returns ServletException. Size of image is 1200px width.
+     * <p>
+     * Content type is set to application//octet-stream. This means that image is downloaded
+     * to user.
+     * 
+     * <p>
+     * If the image, that user would like to access, is not on the user's image list,
+     * user is redirected to image details and image is not downloaded.
+     * <p>
+     * Obligatory request parameter is:
+     * <ul> 
+     * <li>imageId-id of image that user wants</li>
+     * </ul>
+     *  <p>
+     *
      *
      * @param request servlet request
      * @param response servlet response
@@ -179,10 +179,10 @@ public class GetImage extends HttpServlet {
             throw new ServletException("Parameter imageId is not set");
         }
         
-        try{
-            imageIdInt = Integer.valueOf(imageId);
-        }
-        catch(Exception e){
+        ImageManagement im = new ImageManagement();
+        Image img = im.getImageById(imageId);
+        
+        if(img == null){
             throw new ServletException("Wrong type parameter imageId.");
         }
         
@@ -191,9 +191,6 @@ public class GetImage extends HttpServlet {
             
         UserManagement um = new UserManagement();
         User curUser = um.getUserById(2);
-        
-        ImageManagement im = new ImageManagement();
-        Image img = im.getImageById(imageId);
         
         if(!curUser.getImageSet().contains(img)){
             response.sendRedirect("./imageDetails.jsp?pass=true&imageId="+imageId);

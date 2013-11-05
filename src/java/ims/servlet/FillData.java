@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.UserTransaction;
 
 /**
- *
- * @author andrazhribernik
  * This class is used only for development purposes to fulfill a database.
+ * @author andrazhribernik
+ *
  */
 @WebServlet(name = "FillData", urlPatterns = {"/FillData"})
 public class FillData extends HttpServlet {
