@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * 
  * 
- * This servlet is made to connect user with purchased image.
+ * This servlet is made to link user with purchased image.
  * <p>
  * This servlet has the same behaviour for GET and POST request
  * @author andrazhribernik

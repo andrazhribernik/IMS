@@ -21,7 +21,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 
 /**
- *
+ *This class provides connection to PayPalAPI. 
+ * All credentials are predefined.
  * @author andrazhribernik
  */
 public class PayPalAPIManeger {
@@ -33,6 +34,18 @@ public class PayPalAPIManeger {
     private final static String METHOD = "GetTransactionDetails";
     private final static String VERSION = "94";
     private final static String AMOUNT = "1%2e00";
+    
+    /**
+     * This method checks validity of PayPal transaction.
+     * User has to give an argument of transaction and id of image that was bought 
+     * in specified transaction. If transaction exists, item number is the same as specified 
+     * imageId and amount of money was 1 EUR, then method return true, otherwise false.
+     * @param transaction defines PayPal transaction that method queries about.
+     * @param itemId defines the image that we would like to check if that image 
+     * was involved in specified transaction. 
+     * @return If item is involved in specified transaction, method returns true, 
+     * otherwise false
+     */
     
     public boolean checkTransactionWithItem(String transaction, String itemId){
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -83,9 +96,15 @@ public class PayPalAPIManeger {
         return false;
     }
     
+    
+    /**
+     * This main method is used to test method checkTransactionWithItem. With 
+     * running parameters developer can set transactionId and itemId.  
+     * @param args 
+     */
     public static void main(String[] args){
         PayPalAPIManeger ppm = new PayPalAPIManeger();
-        System.out.println(ppm.checkTransactionWithItem("1YV032075V8482257", "5"));
+        System.out.println(ppm.checkTransactionWithItem(args[0], args[1]));
     }
     
 }
