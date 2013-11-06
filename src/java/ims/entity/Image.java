@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *JPA entity Image, which represents a table image in database.
  * @author andrazhribernik
  */
 @Entity
@@ -69,72 +69,132 @@ public class Image implements Serializable {
     @JoinColumn(name = "Category_idCategory", referencedColumnName = "idCategory")
     @ManyToOne(optional = false)
     private Category categoryidCategory;
-
+    /**
+     * Constructor
+     */
     public Image() {
     }
-
+    /**
+     * Constructor
+     * @param idImage 
+     */
     public Image(Integer idImage) {
         this.idImage = idImage;
     }
-
+    /**
+     * Constructor
+     * @param idImage
+     * @param name 
+     */
     public Image(Integer idImage, String name) {
         this.idImage = idImage;
         this.name = name;
     }
-
+    
+    /**
+     * Getter
+     * @return imageId
+     */
     public Integer getIdImage() {
         return idImage;
     }
-
+    /**
+     * Setter
+     * @param idImage 
+     */
     public void setIdImage(Integer idImage) {
         this.idImage = idImage;
     }
-
+    
+    /**
+     * Getter
+     * @return name
+     */
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * Setter
+     * @param name 
+     */
     public void setName(String name) {
         this.name = name;
     }
-
+    
+    /**
+     * Return image password for full-access to object Image
+     * @return password 
+     */
     public String getPassword() {
         return password;
     }
-
+    
+    /**
+     * Set a password for full-access to object Image
+     * @param password 
+     */
     public void setPassword(String password) {
         this.password = password;
     }
-
+    /**
+     * Getter
+     * @return Date of when the image was created
+     */
     public Date getDate() {
         return date;
     }
-
+    /**
+     * Set the date of image creation
+     * @param date 
+     */
     public void setDate(Date date) {
         this.date = date;
     }
-
+    
+    /**
+     * Get the Set of Users that bought that image
+     * @return Set of Users
+     */
     @XmlTransient
     public Set<User> getUserSet() {
         return userSet;
     }
-
+    /**
+     * Set the Set of Users that bought that image
+     * @param userSet 
+     */
     public void setUserSet(Set<User> userSet) {
         this.userSet = userSet;
     }
-
+    
+    /**
+     * Get the user who is the owner of that image. 
+     * Normally this is the user who was uploaded this Image.
+     * @return User
+     */
     public User getUseridUser() {
         return useridUser;
     }
-
+    /**
+     * Set the user who is the owner of that image.
+     * Normally this is the user who was uploaded this Image.
+     * @param useridUser 
+     */
     public void setUseridUser(User useridUser) {
         this.useridUser = useridUser;
     }
-
+    /**
+     * Get Category of this image.
+     * @return Category 
+     */
     public Category getCategoryidCategory() {
         return categoryidCategory;
     }
-
+    /**
+     * Set category of this image.
+     * @param categoryidCategory 
+     */
     public void setCategoryidCategory(Category categoryidCategory) {
         this.categoryidCategory = categoryidCategory;
     }

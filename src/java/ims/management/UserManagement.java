@@ -44,7 +44,7 @@ public class UserManagement {
         
     }
     /**
-     * This method return Set of images for specified user. 
+     * This method return Set of images that specified user has already bought. 
      * User is defined by username.
      * @param username This parameter defines user.
      * @return Set of objects Image, which belong to specified user.

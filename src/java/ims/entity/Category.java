@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *This is JPA entity Category, which represents a table category of image in database.
  * @author andrazhribernik
  */
 @Entity
@@ -42,37 +42,65 @@ public class Category implements Serializable {
     @Size(max = 45)
     @Column(name = "categoryName")
     private String categoryName;
+ 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categoryidCategory")
     private Set<Image> imageSet;
-
+    
+    /**
+     * Constructor
+     */
     public Category() {
     }
-
+    
+    /**
+     * Constructor
+     * @param idCategory 
+     */
     public Category(Integer idCategory) {
         this.idCategory = idCategory;
     }
-
+    
+    /**
+     * Getter
+     * @return id of category
+     */
     public Integer getIdCategory() {
         return idCategory;
     }
-
+    /**
+     * Setter
+     * @param idCategory 
+     */
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
     }
-
+    /**
+     * Getter
+     * @return category name
+     */
     public String getCategoryName() {
         return categoryName;
     }
-
+    /**
+     * Setter 
+     * @param categoryName 
+     */
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-
+    
+    /**
+     * Getter which return Set of all images which belong to object Category
+     * @return Set of Images
+     */
     @XmlTransient
     public Set<Image> getImageSet() {
         return imageSet;
     }
-
+    /**
+     * Setter which set Set of Images for object Category
+     * @param imageSet 
+     */
     public void setImageSet(Set<Image> imageSet) {
         this.imageSet = imageSet;
     }

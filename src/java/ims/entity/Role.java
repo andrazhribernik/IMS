@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *JPA entity Role, which represents a table role in database.
  * @author andrazhribernik
  */
 @Entity
@@ -47,40 +47,68 @@ public class Role implements Serializable {
     private String name;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roleidRole")
     private Set<User> userSet;
-
+    
+    /**
+     * Constructor
+     */
     public Role() {
     }
-
+    /**
+     * Constructor
+     * @param idRole 
+     */
     public Role(Integer idRole) {
         this.idRole = idRole;
     }
-
+    /**
+     * Constructor
+     * @param idRole
+     * @param name 
+     */
     public Role(Integer idRole, String name) {
         this.idRole = idRole;
         this.name = name;
     }
-
+    /**
+     * Get id of that Role
+     * @return id
+     */
     public Integer getIdRole() {
         return idRole;
     }
-
+    /**
+     * Set id of that Role
+     * @param idRole 
+     */
     public void setIdRole(Integer idRole) {
         this.idRole = idRole;
     }
-
+    /**
+     * Get name of that Role
+     * @return name 
+     */
     public String getName() {
         return name;
     }
-
+    /**
+     * Set name of that role
+     * @param name 
+     */
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * Get Set of Users with that Role
+     * @return Set of Users
+     */
     @XmlTransient
     public Set<User> getUserSet() {
         return userSet;
     }
-
+    /**
+     * Set Set of Users with that Role
+     * @param userSet 
+     */
     public void setUserSet(Set<User> userSet) {
         this.userSet = userSet;
     }

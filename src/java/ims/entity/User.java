@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
+ *JPA entity User, which represents table user in database.
  * @author andrazhribernik
  */
 @Entity
@@ -57,59 +57,101 @@ public class User implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "useridUser")
     private Set<Image> imageSet1;
 
+    /**
+     * Constructor
+     */
     public User() {
     }
-
+    /**
+     * Constructor
+     * @param idUser 
+     */
     public User(Integer idUser) {
         this.idUser = idUser;
     }
-
+    /**
+     * Get id of User
+     * @return id
+     */
     public Integer getIdUser() {
         return idUser;
     }
-
+    /**
+     * Set id of user
+     * @param idUser 
+     */
     public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
-
+    /**
+     * Get username of User
+     * @return username 
+     */
     public String getUsername() {
         return username;
     }
-
+    /**
+     * Set username of User
+     * @param username 
+     */
     public void setUsername(String username) {
         this.username = username;
     }
-
+    /**
+     * Get password of user
+     * @return password
+     */
     public String getPassword() {
         return password;
     }
-
+    /**
+     * Set password of user
+     * @param password 
+     */
     public void setPassword(String password) {
         this.password = password;
     }
-
+    /**
+     * Get Set of Images that were bought by User
+     * @return Set of Images
+     */
     @XmlTransient
     public Set<Image> getImageSet() {
         return imageSet;
     }
-
+    /**
+     * Set Set of Images that were bought by User
+     * @param imageSet 
+     */
     public void setImageSet(Set<Image> imageSet) {
         this.imageSet = imageSet;
     }
-
+    /**
+     * Get Role of User
+     * @return Role
+     */
     public Role getRoleidRole() {
         return roleidRole;
     }
-
+    /**
+     * Set Role of User
+     * @param roleidRole 
+     */
     public void setRoleidRole(Role roleidRole) {
         this.roleidRole = roleidRole;
     }
-
+    /**
+     * Get Set of Images that are owned/uploaded by User
+     * @return Set of images
+     */
     @XmlTransient
     public Set<Image> getImageSet1() {
         return imageSet1;
     }
-
+    /**
+     * Set Set of Images that are owned/uploaded by User
+     * @param imageSet1 
+     */
     public void setImageSet1(Set<Image> imageSet1) {
         this.imageSet1 = imageSet1;
     }
