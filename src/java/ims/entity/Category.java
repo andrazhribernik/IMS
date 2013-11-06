@@ -61,28 +61,28 @@ public class Category implements Serializable {
     }
     
     /**
-     * Getter
-     * @return id of category
+     * Get Category id
+     * @return id
      */
     public Integer getIdCategory() {
         return idCategory;
     }
     /**
-     * Setter
+     * Set Category id
      * @param idCategory 
      */
     public void setIdCategory(Integer idCategory) {
         this.idCategory = idCategory;
     }
     /**
-     * Getter
+     * Get Category name
      * @return category name
      */
     public String getCategoryName() {
         return categoryName;
     }
     /**
-     * Setter 
+     * Set Category name
      * @param categoryName 
      */
     public void setCategoryName(String categoryName) {
@@ -90,7 +90,7 @@ public class Category implements Serializable {
     }
     
     /**
-     * Getter which return Set of all images which belong to object Category
+     * Get Set of all images which belong to that Category
      * @return Set of Images
      */
     @XmlTransient
@@ -98,7 +98,7 @@ public class Category implements Serializable {
         return imageSet;
     }
     /**
-     * Setter which set Set of Images for object Category
+     * Set Set of all images which belong to that Category
      * @param imageSet 
      */
     public void setImageSet(Set<Image> imageSet) {

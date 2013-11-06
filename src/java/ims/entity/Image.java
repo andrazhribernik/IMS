@@ -92,14 +92,14 @@ public class Image implements Serializable {
     }
     
     /**
-     * Getter
+     * Get Image id
      * @return imageId
      */
     public Integer getIdImage() {
         return idImage;
     }
     /**
-     * Setter
+     * Set Image id
      * @param idImage 
      */
     public void setIdImage(Integer idImage) {
@@ -107,7 +107,7 @@ public class Image implements Serializable {
     }
     
     /**
-     * Getter
+     * Get Image name
      * @return name
      */
     public String getName() {
@@ -115,7 +115,7 @@ public class Image implements Serializable {
     }
     
     /**
-     * Setter
+     * Set Image name
      * @param name 
      */
     public void setName(String name) {
@@ -123,7 +123,7 @@ public class Image implements Serializable {
     }
     
     /**
-     * Return image password for full-access to object Image
+     * Get image password for full-size image
      * @return password 
      */
     public String getPassword() {
@@ -131,22 +131,22 @@ public class Image implements Serializable {
     }
     
     /**
-     * Set a password for full-access to object Image
+     * Set a password for full-size Image
      * @param password 
      */
     public void setPassword(String password) {
         this.password = password;
     }
     /**
-     * Getter
+     * Get Image date
      * @return Date of when the image was created
      */
     public Date getDate() {
         return date;
     }
     /**
-     * Set the date of image creation
-     * @param date 
+     * Set Image date
+     * @param date of image creation
      */
     public void setDate(Date date) {
         this.date = date;
