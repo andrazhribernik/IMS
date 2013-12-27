@@ -6,6 +6,7 @@ package ims.servlet;
 
 import ims.entity.Image;
 import ims.management.ImageManagement;
+import ims.management.LoginManagement;
 import ims.management.PayPalAPIManeger;
 import ims.management.TemplatingManagement;
 import java.io.IOException;
@@ -15,7 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -96,17 +99,34 @@ public class PayPalReturnServlet extends HttpServlet {
             }
             
             PayPalAPIManeger ppam = new PayPalAPIManeger();
-            if(!ppam.checkTransactionWithItem(transactionId, String.valueOf(currentImage.getIdImage()))){
+            if(!ppam.checkTransactionWithItem(transactionId, String.valueOf(currentImage.getIdImage()), currentImage.getPriceD())){
                 String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
                 out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
                 return;
             }
             
+            LoginManagement lm = new LoginManagement(request.getSession());
+            if(!lm.isLoggedIn()){
+                String message = "<div class=\"alert alert-danger\">You have to be logged in.</div>";
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                return;
+            }
+            
+            
+            
+            EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
+            em.getTransaction().begin();
+            currentImage.getUserSet().add(lm.getUser());
+            em.merge(currentImage);
+            em.getTransaction().commit();
+            em.close();
+
+            
+            
+            
             String message = "";
-            message += "<p>Your password for purchased image is <strong>";
-            message += currentImage.getPassword();
-            message += ".</strong></p>";
-            message += "<a href=\"imageDetails.jsp?imageId="+currentImage.getIdImage()+"\">Back to image</a>";
+            message += "<p>Thank you for your purchase.</p>";
+            message += "<a href=\"myImages.jsp\">List purchased images.</a>";
             
             out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
             

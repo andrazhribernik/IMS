@@ -5,6 +5,7 @@
 package ims.management;
 
 import ims.entity.Image;
+import ims.entity.Role;
 import ims.entity.User;
 import java.util.List;
 import java.util.Set;
@@ -55,6 +56,10 @@ public class UserManagement {
         return user.getImageSet();
     }
     
+    public Set<Image> getUserImages(User user) throws Exception{
+        return user.getImageSet();
+    }
+    
     /**
      * This method return User with specified id.
      * @param id This parameter defines user.
@@ -62,6 +67,24 @@ public class UserManagement {
      */
     public User getUserById(int id){
         return em.find(User.class, id);
+    }
+    
+    public void addUser(String username, String password){
+        em.getEntityManagerFactory().getCache().evictAll();
+        Role userRole = (Role) em.createNamedQuery("Role.findByName").setParameter("name", "user").getResultList().get(0);
+        em.getTransaction().begin();
+        try{
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            newUser.setRoleidRole(userRole);
+            em.persist(newUser);
+            em.getTransaction().commit();
+        }
+        catch(Exception e){
+            em.getTransaction().rollback();
+        }
+        
     }
     
 }

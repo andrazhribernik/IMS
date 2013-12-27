@@ -77,7 +77,8 @@ public class FillData extends HttpServlet {
                 img.setDate(new Date());
                 img.setName("image"+String.valueOf(i)+".jpg");
                 img.setUseridUser(u);
-                img.setPassword("password"+String.valueOf(i));
+                //img.setPassword("password"+String.valueOf(i));
+                img.setPriceD(1.00);
 
                 em.persist(img);
             }

@@ -47,7 +47,7 @@ public class PayPalAPIManeger {
      * otherwise false
      */
     
-    public boolean checkTransactionWithItem(String transaction, String itemId){
+    public boolean checkTransactionWithItem(String transaction, String itemId, Double itemPrice){
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(URL);
         List <NameValuePair> nvps = new ArrayList <NameValuePair>();
@@ -78,7 +78,8 @@ public class PayPalAPIManeger {
                     }
                 }
                 if(splitValue[0].equals("AMT")){
-                    if(!splitValue[1].equals(AMOUNT)){
+                    String amount = splitValue[1].replace("%2e", ".");
+                    if(!(Double.valueOf(amount).equals(itemPrice))){
                         return false;
                     }
                 }
@@ -104,7 +105,7 @@ public class PayPalAPIManeger {
      */
     public static void main(String[] args){
         PayPalAPIManeger ppm = new PayPalAPIManeger();
-        System.out.println(ppm.checkTransactionWithItem(args[0], args[1]));
+        System.out.println(ppm.checkTransactionWithItem("1YV032075V8482257", "5",1.00));
     }
     
 }

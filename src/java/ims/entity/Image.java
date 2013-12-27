@@ -38,9 +38,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
     @NamedQuery(name = "Image.findByIdImage", query = "SELECT i FROM Image i WHERE i.idImage = :idImage"),
     @NamedQuery(name = "Image.findByName", query = "SELECT i FROM Image i WHERE i.name = :name"),
-    @NamedQuery(name = "Image.findByPassword", query = "SELECT i FROM Image i WHERE i.password = :password"),
     @NamedQuery(name = "Image.findByDate", query = "SELECT i FROM Image i WHERE i.date = :date")})
 public class Image implements Serializable {
+    @Column(name = "price")
+    private Integer price;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,8 +54,6 @@ public class Image implements Serializable {
     @Column(name = "name")
     private String name;
     @Size(max = 45)
-    @Column(name = "password")
-    private String password;
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
@@ -122,21 +121,8 @@ public class Image implements Serializable {
         this.name = name;
     }
     
-    /**
-     * Get image password for full-size image
-     * @return password 
-     */
-    public String getPassword() {
-        return password;
-    }
     
-    /**
-     * Set a password for full-size Image
-     * @param password 
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
+
     /**
      * Get Image date
      * @return Date of when the image was created
@@ -222,6 +208,22 @@ public class Image implements Serializable {
     @Override
     public String toString() {
         return "ims.entity.Image[ idImage=" + idImage + " ]";
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+    
+    public Double getPriceD() {
+        return this.price/100.0;
+    }
+
+    public void setPriceD(Double price) {
+        this.price = (int)(price*100);
     }
     
 }

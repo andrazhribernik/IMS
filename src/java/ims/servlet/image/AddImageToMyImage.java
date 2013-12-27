@@ -54,6 +54,7 @@ public class AddImageToMyImage extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         //request paremeter should have 2 parameters: image id and image size.
         String imageId = request.getParameter("imageId");
         Integer imageIdInt = 1;
@@ -72,7 +73,7 @@ public class AddImageToMyImage extends HttpServlet {
         catch(Exception e){
             throw new ServletException("Wrong type parameter imageId.");
         }
-        
+        /*
         ImageManagement im = new ImageManagement();
         Image img = im.getImageById(imageId);
         if(!img.getPassword().equals(userPassword)){
@@ -104,6 +105,7 @@ public class AddImageToMyImage extends HttpServlet {
         em.close();
         System.out.println(currentUser.getImageSet().size());
         response.sendRedirect("./myImages.jsp");
+        * */
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
