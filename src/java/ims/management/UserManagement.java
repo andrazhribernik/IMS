@@ -87,4 +87,27 @@ public class UserManagement {
         
     }
     
+    public void editUser(User u){
+        em.getEntityManagerFactory().getCache().evictAll();
+        em.getTransaction().begin();
+        try{
+            em.persist(u);
+            em.getTransaction().commit();
+        }
+        catch(Exception e){
+            em.getTransaction().rollback();
+        }
+    }
+    
+    public Role getRoleById(Integer id){
+        Role userRole = (Role) em.createNamedQuery("Role.findByIdRole").setParameter("idRole", id).getResultList().get(0);
+        return userRole;
+    }
+    
+    public List<User> getAllUsersExceptAdmin(){
+        em.getEntityManagerFactory().getCache().evictAll();
+        List<User> users = (List<User>) em.createNamedQuery("User.findAllExceptAdmin").getResultList();
+        return users;
+    }
+    
 }

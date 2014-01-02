@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Image.findAll", query = "SELECT i FROM Image i"),
     @NamedQuery(name = "Image.findByIdImage", query = "SELECT i FROM Image i WHERE i.idImage = :idImage"),
     @NamedQuery(name = "Image.findByName", query = "SELECT i FROM Image i WHERE i.name = :name"),
+    @NamedQuery(name = "Image.findByNameAndUser", query = "SELECT i FROM Image i WHERE i.name = :name AND i.useridUser.username = :username"),
     @NamedQuery(name = "Image.findByDate", query = "SELECT i FROM Image i WHERE i.date = :date")})
 public class Image implements Serializable {
     @Column(name = "price")
@@ -53,7 +54,7 @@ public class Image implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "name")
     private String name;
-    @Size(max = 45)
+
     @Column(name = "date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
@@ -223,7 +224,7 @@ public class Image implements Serializable {
     }
 
     public void setPriceD(Double price) {
-        this.price = (int)(price*100);
+        this.price = new Integer((int)(price*100));
     }
     
 }

@@ -13,11 +13,10 @@
             </div>
             <div class="">
                 <ul class="nav navbar-nav">
-                    <li><a href="index.jsp">Images</a></li>
-                    <li><a href="myImages.jsp">My images</a></li>
+                    <!--links-->
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                     <li><a href="#">User1</a></li>
+                     <!--login-->
                 </ul>
             </div>
         </nav>

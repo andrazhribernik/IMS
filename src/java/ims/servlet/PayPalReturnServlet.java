@@ -86,7 +86,7 @@ public class PayPalReturnServlet extends HttpServlet {
         try {
             if(transactionId == null || itemId == null){
                 String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
-                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message, request.getSession()));
                 return;
             }
             
@@ -94,24 +94,23 @@ public class PayPalReturnServlet extends HttpServlet {
             Image currentImage = im.getImageById(itemId);
             if(currentImage == null){
                 String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
-                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message, request.getSession()));
                 return;
             }
             
             PayPalAPIManeger ppam = new PayPalAPIManeger();
             if(!ppam.checkTransactionWithItem(transactionId, String.valueOf(currentImage.getIdImage()), currentImage.getPriceD())){
                 String message = "<div class=\"alert alert-danger\">Wrong parameters</div>";
-                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message, request.getSession()));
                 return;
             }
             
             LoginManagement lm = new LoginManagement(request.getSession());
             if(!lm.isLoggedIn()){
                 String message = "<div class=\"alert alert-danger\">You have to be logged in.</div>";
-                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+                out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message, request.getSession()));
                 return;
             }
-            
             
             
             EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
@@ -128,7 +127,7 @@ public class PayPalReturnServlet extends HttpServlet {
             message += "<p>Thank you for your purchase.</p>";
             message += "<a href=\"myImages.jsp\">List purchased images.</a>";
             
-            out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message));
+            out.write(TemplatingManagement.getTemplateWithContent(this.getServletContext(), message, request.getSession()));
             
         }
         catch(Exception e){

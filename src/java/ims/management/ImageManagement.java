@@ -4,9 +4,15 @@
  */
 package ims.management;
 
+import ims.entity.Category;
 import ims.entity.Image;
+import ims.entity.Role;
+import ims.entity.User;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManagerFactory;
@@ -62,6 +68,30 @@ public class ImageManagement {
             return null;
         }
         return images.get(0);
+    }
+    
+    public boolean isImageNameEmpty(String imageName, User u){
+        em.getEntityManagerFactory().getCache().evictAll();
+        Vector<Image> images = (Vector<Image>) em.createNamedQuery("Image.findByNameAndUser").setParameter("name", imageName).setParameter("username", u.getUsername()).getResultList();
+        if(images.size() == 0){
+            return true;
+        }
+        return false;
+    }
+    
+    public void addImage(Image i){
+        em.getEntityManagerFactory().getCache().evictAll();
+        Category category = (Category) em.createNamedQuery("Category.findByIdCategory").setParameter("idCategory", 1).getResultList().get(0);
+        em.getTransaction().begin();
+        try{
+            i.setCategoryidCategory(category);
+            em.persist(i);
+            em.getTransaction().commit();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            em.getTransaction().rollback();
+        }
     }
     
 }

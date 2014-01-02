@@ -54,6 +54,7 @@ public class LoginManagement {
             } catch (IOException ex) {
                 Logger.getLogger(LoginManagement.class.getName()).log(Level.SEVERE, null, ex);
             }
+            return;
         }
         boolean isAllowed = false;
         for(String role:roles){

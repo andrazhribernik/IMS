@@ -87,7 +87,6 @@ public class GetImage extends HttpServlet {
         
         //request paremeter should have 2 parameters: image id and image size.
         String imageId = request.getParameter("imageId");
-        Integer imageIdInt = 1;
         //if GET paramter imageId is not set, we throw an exception
         if(imageId == null){
             throw new ServletException("Parameter imageId is not set");
@@ -110,11 +109,10 @@ public class GetImage extends HttpServlet {
             imageSize = "300";
         }
         
-        
         ServletContext cntx= getServletContext();
         // Get the absolute path of the image
         //image path is set regarding imageId and imageSize
-        String imagePath = "Images/"+imageSize+"/"+img.getName();
+        String imagePath = "Images/"+imageSize+"/"+img.getUseridUser().getUsername()+"/"+img.getName();
         System.out.println(imagePath);
         String filename = cntx.getRealPath(imagePath);
         String mime = cntx.getMimeType(filename);
@@ -204,7 +202,7 @@ public class GetImage extends HttpServlet {
         ServletContext cntx= getServletContext();
         // Get the absolute path of the image
         //image path is set regarding imageId and imageSize
-        String imagePath = "Images/1200/"+img.getName();
+        String imagePath = "Images/1200/"+img.getUseridUser().getUsername()+"/"+img.getName();
         System.out.println(imagePath);
         String filename = cntx.getRealPath(imagePath);
         String mime = cntx.getMimeType(filename);
