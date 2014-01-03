@@ -4,10 +4,14 @@
  */
 package ims.management;
 
+import ims.entity.Image;
 import ims.entity.User;
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.http.HttpRequest;
@@ -19,10 +23,12 @@ import org.apache.http.HttpRequest;
 public class LoginManagement {
     private HttpSession session;
     private User user;
+    private EntityManager em;
     
     public LoginManagement(HttpSession session){
         this.session = session;
         this.user = (User)session.getAttribute("user");
+        em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
     }
     public boolean isLoggedIn(){
         if(user == null)
@@ -73,6 +79,10 @@ public class LoginManagement {
     }
     
     public User getUser() {
+        if(user != null){
+            em.getEntityManagerFactory().getCache().evictAll();
+            user =  (User)em.createNamedQuery("User.findByIdUser").setParameter("idUser", user.getIdUser()).getResultList().get(0);
+        }
         return user;
     }
     

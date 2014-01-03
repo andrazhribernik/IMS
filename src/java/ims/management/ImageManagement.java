@@ -94,4 +94,9 @@ public class ImageManagement {
         }
     }
     
+    public Integer soldHowManyTimes(Image i){
+        em.getEntityManagerFactory().getCache().evictAll();
+        return i.getUserSet().size();
+    }
+    
 }

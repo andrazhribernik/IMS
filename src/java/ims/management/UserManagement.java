@@ -60,6 +60,10 @@ public class UserManagement {
         return user.getImageSet();
     }
     
+    public Set<Image> getUserUploadedImages(User user) throws Exception{
+        return user.getImageSet1();
+    }
+    
     /**
      * This method return User with specified id.
      * @param id This parameter defines user.

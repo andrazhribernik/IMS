@@ -7,6 +7,7 @@ package ims.servlet.image;
 import ims.entity.Image;
 import ims.entity.User;
 import ims.management.ImageManagement;
+import ims.management.LoginManagement;
 import ims.management.UserManagement;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
@@ -112,7 +113,7 @@ public class GetImage extends HttpServlet {
         ServletContext cntx= getServletContext();
         // Get the absolute path of the image
         //image path is set regarding imageId and imageSize
-        String imagePath = "Images/"+imageSize+"/"+img.getUseridUser().getUsername()+"/"+img.getName();
+        String imagePath = "Images"+File.separator+imageSize+File.separator+img.getUseridUser().getUsername()+File.separator+img.getName();
         System.out.println(imagePath);
         String filename = cntx.getRealPath(imagePath);
         String mime = cntx.getMimeType(filename);
@@ -187,10 +188,9 @@ public class GetImage extends HttpServlet {
         //At that moment default user is user with userId = 2
         //when we will implemet log in we will get user from session, othervise we will throw error.
             
-        UserManagement um = new UserManagement();
-        User curUser = um.getUserById(2);
+        LoginManagement lm = new LoginManagement(request.getSession());
         
-        if(!curUser.getImageSet().contains(img)){
+        if(!lm.getUser().getImageSet().contains(img)){
             response.sendRedirect("./imageDetails.jsp?pass=true&imageId="+imageId);
             return;
         }
@@ -202,7 +202,7 @@ public class GetImage extends HttpServlet {
         ServletContext cntx= getServletContext();
         // Get the absolute path of the image
         //image path is set regarding imageId and imageSize
-        String imagePath = "Images/1200/"+img.getUseridUser().getUsername()+"/"+img.getName();
+        String imagePath = "Images"+File.separator+"1200"+File.separator+img.getUseridUser().getUsername()+File.separator+img.getName();
         System.out.println(imagePath);
         String filename = cntx.getRealPath(imagePath);
         String mime = cntx.getMimeType(filename);

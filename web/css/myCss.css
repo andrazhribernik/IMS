@@ -10,5 +10,16 @@
     margin: 20px;
 }
 
+.align-right{
+    float: right;
+}
+
+.my-width dt{
+    width: 100px;
+}
+
+.my-width dd{
+    margin-left: 10px;
+}
 
 
