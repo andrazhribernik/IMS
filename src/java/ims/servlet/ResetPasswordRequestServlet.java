@@ -4,9 +4,16 @@
  */
 package ims.servlet;
 
+import ims.entity.LostPasswordRequest;
+import ims.entity.User;
 import ims.management.LoginManagement;
+import ims.management.ResetPasswordManagement;
+import ims.management.UserManagement;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.ServerException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +24,19 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author andrazhribernik
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ResetPasswordRequestServlet", urlPatterns = {"/ResetPasswordRequest"})
+public class ResetPasswordRequestServlet extends HttpServlet {
+    
+    private static boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+     }
 
     /**
      * Processes requests for both HTTP
@@ -33,25 +51,38 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
+        String email = request.getParameter("email");
         if(username == null){
-            throw new ServletException("Parameter username is not set");
+            throw new ServerException("Parameter username is not set");
+        }
+        if(email == null){
+            throw new ServerException("Parameter email is not set");
         }
         
-        if(password == null){
-            throw new ServletException("Parameter password is not set");
-        }
-        
-        LoginManagement loginManagement = new LoginManagement(request.getSession(true));
-        if(loginManagement.logIn(username, password)){
-            response.sendRedirect("./index.jsp");
-            return;
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
+            UserManagement um = new UserManagement();
+            User user = um.getUserByUsername(username);
             
-        }
-        else{
-            response.sendRedirect("./logIn.jsp?message=Wrong username or password!");
-            return;
+            if(!isValidEmailAddress(email)){
+                response.sendRedirect("./resetPasswordForm.jsp?messageEmail=Invalid email address.");
+                return;
+            }
+            
+            LostPasswordRequest lpr = new LostPasswordRequest();
+            lpr.setEmail(email);
+            lpr.setUseridUser(user);
+            lpr.setIsRead(Boolean.FALSE);
+            
+            ResetPasswordManagement rpm = new ResetPasswordManagement();
+            rpm.addResetPasswordRequest(lpr);
+            response.sendRedirect("./resetPasswordForm.jsp?message=Your request has been sent to administrator. We will respond to your email as soon as possible.");
+            
+        } catch (Exception ex) {
+            response.sendRedirect("./resetPasswordForm.jsp?messageUsername=This username does not exist.");
+        } finally {            
+            out.close();
         }
     }
 

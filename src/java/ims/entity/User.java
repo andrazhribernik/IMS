@@ -38,6 +38,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "useridUser")
+    private Set<LostPasswordRequest> lostPasswordRequestSet;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -180,6 +182,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "ims.entity.User[ idUser=" + idUser + " ]";
+    }
+
+    @XmlTransient
+    public Set<LostPasswordRequest> getLostPasswordRequestSet() {
+        return lostPasswordRequestSet;
+    }
+
+    public void setLostPasswordRequestSet(Set<LostPasswordRequest> lostPasswordRequestSet) {
+        this.lostPasswordRequestSet = lostPasswordRequestSet;
     }
     
 }

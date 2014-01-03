@@ -1,6 +1,15 @@
+<%@page import="ims.management.LoginManagement"%>
 <%@page import="ims.entity.Image"%>
 <%@page import="java.util.List"%>
 <%@page import="ims.management.ImageManagement"%>
+<% 
+    LoginManagement loginMng = new LoginManagement(session);
+    if(loginMng.isLoggedIn()){
+        if(loginMng.getUser().getRoleidRole().getName().equals("admin")){
+            response.sendRedirect("./UserManagementServlet");
+        }
+    }
+%>
 <!--
 To change this template, choose Tools | Templates
 and open the template in the editor.

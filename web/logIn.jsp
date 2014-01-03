@@ -26,8 +26,12 @@
                 <% } %>
                 
             </form>
+            <br>    
             <div>
                 Or <a href="./register.jsp">Sign up</a> for new account.
+            </div>   
+            <div>
+                Or <a href="./resetPasswordForm.jsp">get</a> a new password.      
             </div>
         </div>
     </body>

@@ -1,11 +1,8 @@
-<%-- 
-    Document   : navigationBar
-    Created on : Nov 3, 2013, 11:33:57 AM
-    Author     : andrazhribernik
---%>
-
 <%@page import="ims.entity.Role"%>
 <%@page import="ims.management.LoginManagement"%>
+<% 
+    LoginManagement loginMng = new LoginManagement(session);
+%>
 <nav class="navbar navbar-inverse" role="navigation">
     <div class="navbar-header">  
         <a class="navbar-brand">Image management system </a>
@@ -13,7 +10,7 @@
     <div class="">
         <ul class="nav navbar-nav">
         <% 
-            LoginManagement loginMng = new LoginManagement(session);
+            
             if(loginMng.isLoggedIn()){
                 Role userRole = loginMng.getUser().getRoleidRole();
                 if(userRole.getName().equals("user")){ %>

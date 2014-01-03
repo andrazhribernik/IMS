@@ -2,9 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ims.servlet;
+package ims.servlet.admin;
 
+import ims.entity.LostPasswordRequest;
+import ims.entity.User;
 import ims.management.LoginManagement;
+import ims.management.ResetPasswordManagement;
+import ims.management.TemplatingManagement;
+import ims.management.UserManagement;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author andrazhribernik
  */
-@WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(name = "ResetPasswordRequestsListServlet", urlPatterns = {"/ResetPasswordRequestsList"})
+public class ResetPasswordRequestsListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
@@ -32,26 +37,36 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        
-        if(username == null){
-            throw new ServletException("Parameter username is not set");
-        }
-        
-        if(password == null){
-            throw new ServletException("Parameter password is not set");
-        }
-        
-        LoginManagement loginManagement = new LoginManagement(request.getSession(true));
-        if(loginManagement.logIn(username, password)){
-            response.sendRedirect("./index.jsp");
-            return;
+        LoginManagement lm = new LoginManagement(request.getSession());
+        lm.userPermissionForThisPage(response, new String[]{"admin"});
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        try {
             
-        }
-        else{
-            response.sendRedirect("./logIn.jsp?message=Wrong username or password!");
-            return;
+            String content = "<div class=\"panel panel-default\"><div class=\"panel-heading\">"
+                    + "<h3>Users Requests</h3>"
+                    + "</div><table class=\"table table-striped\">";
+            content +="<thead><tr><th>user</th><th>email</th><th>Role</th><th></th></tr></thead>";
+            content += "<tbody>";
+            ResetPasswordManagement rpm = new ResetPasswordManagement();
+            for(LostPasswordRequest lpr :rpm.getAllRequests()){
+                if(lpr.getIsRead()){
+                    content += "<tr>";
+                }
+                else{
+                    content += "<tr class=\"warning\">";
+                }
+                content+="<td>"+lpr.getUseridUser().getUsername()+"</td>";
+                content+="<td>"+lpr.getEmail()+"</td>";
+                content+="<td>"+lpr.getUseridUser().getRoleidRole().getName()+"</td>";
+                content+="<td><a href=\"ResetPassword?requestID="+lpr.getIdLostPasswordRequest()+"\">Reset</a></td></tr>";
+            }
+            content+="</tbody></table></div></div>";
+
+            String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content , request.getSession());
+            out.print(result);
+        } finally {            
+            out.close();
         }
     }
 
