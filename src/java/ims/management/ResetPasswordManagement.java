@@ -41,6 +41,11 @@ public class ResetPasswordManagement {
             lpr.setIsRead(Boolean.TRUE);
             em.persist(lpr);
             em.getTransaction().commit();
+            SendMailTLS mailManagement = new SendMailTLS();
+            String mailContent = "Dean "+lpr.getUseridUser().getUsername()+"<br><br>";
+            mailContent += "new password is: <strong>"+lpr.getUseridUser().getPassword()+"</strong><br>";
+            mailContent += "You can log in <a href=\"http://192.168.3.102:8080/IMS_CS3510/logIn.jsp\">here</>.";
+            mailManagement.sendEmail(lpr.getEmail(), mailContent);
         }
         catch(Exception e){
             e.printStackTrace();

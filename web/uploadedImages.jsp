@@ -1,3 +1,4 @@
+<%@page import="ims.management.Constants"%>
 <%@page import="ims.management.ImageManagement"%>
 <%@page import="ims.management.LoginManagement"%>
 <%@page import="java.util.ArrayList"%>
@@ -59,6 +60,8 @@ and open the template in the editor.
                         <dl class="dl-horizontal my-width">
                             <dt>Income</dt>
                             <dd>&euro; <%=images.get(i).getPriceD()*soldNumber %></dd>
+                            <dt>Profit</dt>
+                            <dd>&euro; <%=images.get(i).getPriceD()*soldNumber * Constants.providerPercent %></dd>
                         </dl>
                     </div>    
                 </div>

@@ -198,6 +198,8 @@ public class UploadImage extends HttpServlet {
 
                             System.out.println(filename);
                             File newImage = new File(filename);
+                            if (!newImage.getParentFile().exists())
+                                newImage.getParentFile().mkdirs();
                             
                             if(!newImage.canWrite()){
                                 newImage.setWritable(true);
