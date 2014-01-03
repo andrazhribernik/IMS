@@ -91,6 +91,24 @@ public class UserManagement {
         
     }
     
+    public void addUser(String username, String password, Integer role){
+        em.getEntityManagerFactory().getCache().evictAll();
+        Role userRole = (Role) em.createNamedQuery("Role.findByIdRole").setParameter("idRole", role).getResultList().get(0);
+        em.getTransaction().begin();
+        try{
+            User newUser = new User();
+            newUser.setUsername(username);
+            newUser.setPassword(password);
+            newUser.setRoleidRole(userRole);
+            em.persist(newUser);
+            em.getTransaction().commit();
+        }
+        catch(Exception e){
+            em.getTransaction().rollback();
+        }
+        
+    }
+    
     public void editUser(User u){
         em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();

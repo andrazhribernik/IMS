@@ -93,7 +93,7 @@ public class EditUserServlet extends HttpServlet {
             content += "<input type=\"hidden\" value=\""+user.getIdUser()+"\" name=\"user\" />";
             content += "</form>";
             
-            String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content , request.getSession());
+            String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content, request.getSession());
             out.print(result);
         } finally {            
             out.close();
@@ -171,7 +171,8 @@ public class EditUserServlet extends HttpServlet {
                 content += "<input type=\"hidden\" value=\""+user.getIdUser()+"\" name=\"user\" />";
                 content += "</form>";
 
-                String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content , request.getSession());
+                
+                String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content, request.getSession());
                 out.print(result);
             } finally {            
                 out.close();

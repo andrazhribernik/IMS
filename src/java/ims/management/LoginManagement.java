@@ -82,6 +82,7 @@ public class LoginManagement {
         if(user != null){
             em.getEntityManagerFactory().getCache().evictAll();
             user =  (User)em.createNamedQuery("User.findByIdUser").setParameter("idUser", user.getIdUser()).getResultList().get(0);
+            session.setAttribute("user", user);
         }
         return user;
     }

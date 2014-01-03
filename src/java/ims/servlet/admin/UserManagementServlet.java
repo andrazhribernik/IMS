@@ -41,7 +41,10 @@ public class UserManagementServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try {
             
-            String content = "<div class=\"panel panel-default\"><div class=\"panel-heading\">Users</div><table class=\"table table-striped\">";
+            String content = "<a href=\"AddUserServlet\" >Add User</a>" 
+                    +"<div class=\"panel panel-default\"><div class=\"panel-heading\">"
+                    + "<h3>Users</h3>"
+                    + "</div><table class=\"table table-striped\">";
             content +="<thead><tr><th>username</th><th>password</th><th>Role</th><th></th></tr></thead>";
             content += "<tbody>";
             UserManagement um = new UserManagement();
