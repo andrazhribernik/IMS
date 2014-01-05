@@ -222,7 +222,8 @@ public class Image implements Serializable {
     public Double getPriceD() {
         return this.price/100.0;
     }
-
+    
+    
     public void setPriceD(Double price) {
         this.price = new Integer((int)(price*100));
     }

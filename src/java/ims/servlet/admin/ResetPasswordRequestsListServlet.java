@@ -46,7 +46,7 @@ public class ResetPasswordRequestsListServlet extends HttpServlet {
             String content = "<div class=\"panel panel-default\"><div class=\"panel-heading\">"
                     + "<h3>Users Requests</h3>"
                     + "</div><table class=\"table table-striped\">";
-            content +="<thead><tr><th>user</th><th>email</th><th>Role</th><th></th></tr></thead>";
+            content +="<thead><tr><th>user</th><th>Role</th><th></th></tr></thead>";
             content += "<tbody>";
             ResetPasswordManagement rpm = new ResetPasswordManagement();
             for(LostPasswordRequest lpr :rpm.getAllRequests()){
@@ -57,7 +57,6 @@ public class ResetPasswordRequestsListServlet extends HttpServlet {
                     content += "<tr class=\"warning\">";
                 }
                 content+="<td>"+lpr.getUseridUser().getUsername()+"</td>";
-                content+="<td>"+lpr.getEmail()+"</td>";
                 content+="<td>"+lpr.getUseridUser().getRoleidRole().getName()+"</td>";
                 content+="<td><a href=\"ResetPassword?requestID="+lpr.getIdLostPasswordRequest()+"\">Reset</a></td></tr>";
             }

@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "LostPasswordRequest.findAll", query = "SELECT l FROM LostPasswordRequest l ORDER BY l.isRead ASC"),
     @NamedQuery(name = "LostPasswordRequest.findByIdLostPasswordRequest", query = "SELECT l FROM LostPasswordRequest l WHERE l.idLostPasswordRequest = :idLostPasswordRequest"),
-    @NamedQuery(name = "LostPasswordRequest.findByEmail", query = "SELECT l FROM LostPasswordRequest l WHERE l.email = :email")})
+    })
 public class LostPasswordRequest implements Serializable {
     @Column(name = "isRead")
     private Boolean isRead;
@@ -40,10 +40,6 @@ public class LostPasswordRequest implements Serializable {
     @Basic(optional = false)
     @Column(name = "idLostPasswordRequest")
     private Integer idLostPasswordRequest;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
-    @Size(max = 160)
-    @Column(name = "email")
-    private String email;
     @JoinColumn(name = "User_idUser", referencedColumnName = "idUser")
     @ManyToOne(optional = false)
     private User useridUser;
@@ -63,13 +59,6 @@ public class LostPasswordRequest implements Serializable {
         this.idLostPasswordRequest = idLostPasswordRequest;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public User getUseridUser() {
         return useridUser;

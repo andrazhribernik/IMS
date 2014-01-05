@@ -35,7 +35,7 @@ public class ResetPasswordManagement {
         }
     }
     
-    public void finishResetRequest(LostPasswordRequest lpr){
+    public void finishResetRequest(LostPasswordRequest lpr,String host, String port){
         em.getTransaction().begin();
         try{
             lpr.setIsRead(Boolean.TRUE);
@@ -44,8 +44,8 @@ public class ResetPasswordManagement {
             SendMailTLS mailManagement = new SendMailTLS();
             String mailContent = "Dean "+lpr.getUseridUser().getUsername()+"<br><br>";
             mailContent += "new password is: <strong>"+lpr.getUseridUser().getPassword()+"</strong><br>";
-            mailContent += "You can log in <a href=\"http://192.168.3.102:8080/IMS_CS3510/logIn.jsp\">here</>.";
-            mailManagement.sendEmail(lpr.getEmail(), mailContent);
+            mailContent += "You can log in <a href=\"http://"+host+":"+port+"/IMS_CS3510/logIn.jsp\">here</>.";
+            mailManagement.sendEmail(lpr.getUseridUser().getUsername(), mailContent);
         }
         catch(Exception e){
             e.printStackTrace();

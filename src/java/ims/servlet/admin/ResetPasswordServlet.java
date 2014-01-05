@@ -51,7 +51,7 @@ public class ResetPasswordServlet extends HttpServlet {
             Integer.valueOf(requestId);
         }
         catch(Exception e){
-            throw new ServletException("Parameter userID is not integer.");
+            throw new ServletException("Parameter requestID is not integer.");
         }
         
         ResetPasswordManagement rpm = new ResetPasswordManagement();
@@ -118,7 +118,7 @@ public class ResetPasswordServlet extends HttpServlet {
             Integer.valueOf(requestId);
         }
         catch(Exception e){
-            throw new ServletException("Parameter userID is not integer.");
+            throw new ServletException("Parameter requestID is not integer.");
         }
         
         ResetPasswordManagement rpm = new ResetPasswordManagement();
@@ -157,7 +157,7 @@ public class ResetPasswordServlet extends HttpServlet {
             }
             else{
                 lpr.getUseridUser().setPassword(password);
-                rpm.finishResetRequest(lpr);
+                rpm.finishResetRequest(lpr,request.getServerName(),String.valueOf(request.getServerPort()));
                 response.sendRedirect("./ResetPasswordRequestsList");
             }
         } finally {            

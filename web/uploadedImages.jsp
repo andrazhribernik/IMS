@@ -61,7 +61,7 @@ and open the template in the editor.
                             <dt>Income</dt>
                             <dd>&euro; <%=images.get(i).getPriceD()*soldNumber %></dd>
                             <dt>Profit</dt>
-                            <dd>&euro; <%=images.get(i).getPriceD()*soldNumber * Constants.providerPercent %></dd>
+                            <dd>&euro; <%=images.get(i).getPriceD()*soldNumber * (1-Constants.providerPercent) %></dd>
                         </dl>
                     </div>    
                 </div>

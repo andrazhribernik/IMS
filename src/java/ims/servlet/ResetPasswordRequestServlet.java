@@ -27,16 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ResetPasswordRequestServlet", urlPatterns = {"/ResetPasswordRequest"})
 public class ResetPasswordRequestServlet extends HttpServlet {
     
-    private static boolean isValidEmailAddress(String email) {
-        boolean result = true;
-        try {
-            InternetAddress emailAddr = new InternetAddress(email);
-            emailAddr.validate();
-        } catch (AddressException ex) {
-            result = false;
-        }
-        return result;
-     }
 
     /**
      * Processes requests for both HTTP
@@ -51,27 +41,18 @@ public class ResetPasswordRequestServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String username = request.getParameter("username");
-        String email = request.getParameter("email");
         if(username == null){
             throw new ServerException("Parameter username is not set");
         }
-        if(email == null){
-            throw new ServerException("Parameter email is not set");
-        }
-        
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
             UserManagement um = new UserManagement();
             User user = um.getUserByUsername(username);
-            
-            if(!isValidEmailAddress(email)){
-                response.sendRedirect("./resetPasswordForm.jsp?messageEmail=Invalid email address.");
-                return;
-            }
+
             
             LostPasswordRequest lpr = new LostPasswordRequest();
-            lpr.setEmail(email);
             lpr.setUseridUser(user);
             lpr.setIsRead(Boolean.FALSE);
             
@@ -80,7 +61,7 @@ public class ResetPasswordRequestServlet extends HttpServlet {
             response.sendRedirect("./resetPasswordForm.jsp?message=Your request has been sent to administrator. We will respond to your email as soon as possible.");
             
         } catch (Exception ex) {
-            response.sendRedirect("./resetPasswordForm.jsp?messageUsername=This username does not exist.");
+            response.sendRedirect("./resetPasswordForm.jsp?messageUsername=User with specified email does not exist.");
         } finally {            
             out.close();
         }

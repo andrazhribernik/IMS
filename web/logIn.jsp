@@ -12,8 +12,8 @@
         <div class="col-md-4 col-md-offset-4">
             <form role="form" method="POST" action="LoginServlet">
                 <div class="form-group">
-                  <label for="exampleInputEmail1">Username</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Enter username" name="username" />
+                  <label for="exampleInputEmail1">Email</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" placeholder="i.e. jack@gmail.com" name="username" />
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">Password</label>

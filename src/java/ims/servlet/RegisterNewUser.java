@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,6 +39,17 @@ public class RegisterNewUser extends HttpServlet {
             throws ServletException, IOException {
         
     }
+    
+    private static boolean isValidEmailAddress(String email) {
+        boolean result = true;
+        try {
+            InternetAddress emailAddr = new InternetAddress(email);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -81,8 +94,8 @@ public class RegisterNewUser extends HttpServlet {
         if(repassword == null){
             throw new ServletException("Parameter re-type password is not set");
         }
-        if(username.length() < 4){
-            response.sendRedirect("./register.jsp?usernameMessage=Username must contain at least 4 characters.");
+        if(!isValidEmailAddress(username)){
+            response.sendRedirect("./register.jsp?usernameMessage=Email is not valid email address.");
             return;
         }
         if(password.length() < 4){
