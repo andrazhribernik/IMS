@@ -70,6 +70,14 @@ public class ImageManagement {
         return images.get(0);
     }
     
+    /**
+     * Method isImageNameEmpty return True if 'User u' has not uploaded image with
+     * specified 'imageName'
+     * 
+     * @param String imageName
+     * @param User u  
+     * @return is 'imageName' empty for 'User u'
+     */
     public boolean isImageNameEmpty(String imageName, User u){
         em.getEntityManagerFactory().getCache().evictAll();
         Vector<Image> images = (Vector<Image>) em.createNamedQuery("Image.findByNameAndUser").setParameter("name", imageName).setParameter("username", u.getUsername()).getResultList();
@@ -79,6 +87,11 @@ public class ImageManagement {
         return false;
     }
     
+    /**
+     * Add new 'Image i' to database
+     * 
+     * @param 'Image i'
+     */
     public void addImage(Image i){
         em.getEntityManagerFactory().getCache().evictAll();
         Category category = (Category) em.createNamedQuery("Category.findByIdCategory").setParameter("idCategory", 1).getResultList().get(0);
@@ -94,6 +107,11 @@ public class ImageManagement {
         }
     }
     
+    /**
+     * How many times 'Image i' has been sold
+     * 
+     * @param 'Image i'
+     */
     public Integer soldHowManyTimes(Image i){
         em.getEntityManagerFactory().getCache().evictAll();
         return i.getUserSet().size();

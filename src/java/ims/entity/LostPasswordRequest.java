@@ -21,8 +21,10 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
+ *JPA entity LostPasswordRequest, which represents a table LostPasswordRequest in database.
+ * This table stores user's requests for password reset.
  * @author andrazhribernik
+ * 
  */
 @Entity
 @Table(name = "LostPasswordRequest")
@@ -44,26 +46,48 @@ public class LostPasswordRequest implements Serializable {
     @ManyToOne(optional = false)
     private User useridUser;
 
+    /**
+     * Constructor
+     */
     public LostPasswordRequest() {
     }
-
+    
+    /**
+     * Constructor
+     * @param idLostPasswordRequest
+     */
     public LostPasswordRequest(Integer idLostPasswordRequest) {
         this.idLostPasswordRequest = idLostPasswordRequest;
     }
-
+    
+    /**
+     * Get entity id
+     * @return Integer idLostPasswordRequest
+     */
     public Integer getIdLostPasswordRequest() {
         return idLostPasswordRequest;
     }
-
+    
+    /**
+     * Set entity id
+     * @param Integer idLostPasswordRequest
+     */
     public void setIdLostPasswordRequest(Integer idLostPasswordRequest) {
         this.idLostPasswordRequest = idLostPasswordRequest;
     }
 
-
+    /**
+     * Get User who created a request
+     * @return User
+     */
     public User getUseridUser() {
         return useridUser;
     }
-
+    
+    /**
+     * Set User who created a request
+     * @param User
+     */
     public void setUseridUser(User useridUser) {
         this.useridUser = useridUser;
     }
@@ -93,11 +117,18 @@ public class LostPasswordRequest implements Serializable {
         return "ims.entity.LostPasswordRequest[ idLostPasswordRequest=" + idLostPasswordRequest + " ]";
     }
 
-
+    /**
+     * Get Boolean if request has been processed
+     * @return Boolean
+     */
     public Boolean getIsRead() {
         return isRead;
     }
-
+    
+    /**
+     * Set Boolean if request has been processed
+     * @param Boolean
+     */
     public void setIsRead(Boolean isRead) {
         this.isRead = isRead;
     }

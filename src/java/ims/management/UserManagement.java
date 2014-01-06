@@ -56,10 +56,22 @@ public class UserManagement {
         return user.getImageSet();
     }
     
+    /**
+     * This method return Set of images that specified user has already bought. 
+     * @param user This parameter defines user.
+     * @return Set of objects Image, which belong to specified user.
+     * @throws Exception This exception is thrown if user does not exist.
+     */
     public Set<Image> getUserImages(User user) throws Exception{
         return user.getImageSet();
     }
     
+    /**
+     * This method return Set of images that specified user uploaded on portal. 
+     * @param user This parameter defines user.
+     * @return Set of objects Image, which belong to specified user.
+     * @throws Exception This exception is thrown if user does not exist.
+     */
     public Set<Image> getUserUploadedImages(User user) throws Exception{
         return user.getImageSet1();
     }
@@ -73,6 +85,11 @@ public class UserManagement {
         return em.find(User.class, id);
     }
     
+    /**
+     * Add new user into a database.
+     * @param username new user username
+     * @param password new user password
+     */
     public void addUser(String username, String password){
         em.getEntityManagerFactory().getCache().evictAll();
         Role userRole = (Role) em.createNamedQuery("Role.findByName").setParameter("name", "user").getResultList().get(0);
@@ -90,7 +107,12 @@ public class UserManagement {
         }
         
     }
-    
+    /**
+     * Add new user into a database.
+     * @param username new user username
+     * @param password new user password
+     * @param role new user role defined with integer. 1 for user, 3 for contributor
+     */
     public void addUser(String username, String password, Integer role){
         em.getEntityManagerFactory().getCache().evictAll();
         Role userRole = (Role) em.createNamedQuery("Role.findByIdRole").setParameter("idRole", role).getResultList().get(0);
@@ -109,6 +131,10 @@ public class UserManagement {
         
     }
     
+    /**
+     * Update specified user into database
+     * @param u specified user with updated properties
+     */
     public void editUser(User u){
         em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();
@@ -121,11 +147,20 @@ public class UserManagement {
         }
     }
     
+    /**
+     * Return user role with role id
+     * @param id role id
+     * @return user role
+     */
     public Role getRoleById(Integer id){
         Role userRole = (Role) em.createNamedQuery("Role.findByIdRole").setParameter("idRole", id).getResultList().get(0);
         return userRole;
     }
     
+    /**
+     * Return list of all users except users who are administrators.
+     * @return List of users
+     */
     public List<User> getAllUsersExceptAdmin(){
         em.getEntityManagerFactory().getCache().evictAll();
         List<User> users = (List<User>) em.createNamedQuery("User.findAllExceptAdmin").getResultList();

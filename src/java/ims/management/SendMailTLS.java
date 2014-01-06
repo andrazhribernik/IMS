@@ -14,13 +14,19 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 /**
- *
+ *This class provide method for sending Gmail email. 
  * @author andrazhribernik
  */
 public class SendMailTLS {
+    //Gmail account credentials
     final String username = "ah.cs3510@gmail.com";
     final String password = "andrazhribernik";
     
+    /**
+     * Send an email.
+     * @param targetEmail email address of recipient 
+     * @param content content of email
+     */
     public void sendEmail(String targetEmail, String content){
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -51,5 +57,6 @@ public class SendMailTLS {
         } catch (MessagingException e) {
                 throw new RuntimeException(e);
         }
+        catch (Exception e){}
     }
 }

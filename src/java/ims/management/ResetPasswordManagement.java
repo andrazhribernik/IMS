@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ims.management;
 
 import ims.entity.Image;
@@ -11,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 
 /**
- *
+ *This class provides methods to dealing with users' requests for reset of their passwords. 
  * @author andrazhribernik
  */
 public class ResetPasswordManagement {
@@ -21,6 +17,10 @@ public class ResetPasswordManagement {
         em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
     }
     
+    /**
+     * Add lostPasswordRequest to database.
+     * @param lostPasswordRequest 
+     */
     public void addResetPasswordRequest(LostPasswordRequest lpr){
         em.getEntityManagerFactory().getCache().evictAll();
         em.getTransaction().begin();
@@ -35,6 +35,12 @@ public class ResetPasswordManagement {
         }
     }
     
+    /**
+     * This method change 'lostPasswordRequest' property isRead to True and send an email to user with new password. 
+     * @param lpr selected lost password request
+     * @param host server host name
+     * @param port server port number
+     */
     public void finishResetRequest(LostPasswordRequest lpr,String host, String port){
         em.getTransaction().begin();
         try{
@@ -52,13 +58,21 @@ public class ResetPasswordManagement {
             em.getTransaction().rollback();
         }
     }
-    
+    /**
+     * This method return list of all users' request for reset of passwords.
+     * @return List of all users' request for reset of passwords
+     */
     public List<LostPasswordRequest> getAllRequests(){
         em.getEntityManagerFactory().getCache().evictAll();
         List<LostPasswordRequest> result = em.createNamedQuery("LostPasswordRequest.findAll").getResultList();
         return result;
     }
     
+    /**
+     * This method return entity LostPasswordRequest which has 'id' as is specified as parameter.
+     * @param id
+     * @return LostPasswordRequest with specified 'id'
+     */
     public LostPasswordRequest getResetRequestById(Integer id){
         em.getEntityManagerFactory().getCache().evictAll();
         LostPasswordRequest result = (LostPasswordRequest) em.createNamedQuery("LostPasswordRequest.findByIdLostPasswordRequest").setParameter("idLostPasswordRequest", id).getResultList().get(0);

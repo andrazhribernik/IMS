@@ -211,19 +211,35 @@ public class Image implements Serializable {
         return "ims.entity.Image[ idImage=" + idImage + " ]";
     }
 
+    
+    /**
+     * Get Price of this image in cent.
+     * @return Integer 
+     */
     public Integer getPrice() {
         return price;
     }
 
+    /**
+     * Set Price of this image in cent.
+     * @param Integer price
+     */
     public void setPrice(Integer price) {
         this.price = price;
     }
     
+    /**
+     * Get Price of this image.
+     * @return Double 
+     */
     public Double getPriceD() {
         return this.price/100.0;
     }
     
-    
+    /**
+     * Set Price of this image.
+     * @param Double price
+     */
     public void setPriceD(Double price) {
         this.price = new Integer((int)(price*100));
     }

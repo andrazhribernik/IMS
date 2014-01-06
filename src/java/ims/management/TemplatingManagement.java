@@ -31,6 +31,7 @@ public class TemplatingManagement {
      * @param context Servlet context is needed for providing path to file which 
      * include template html.
      * @param content This content will be shown in content area of web page.
+     * @param session Session is needed to figure out user role
      * @return This method return String which include html page with common
      * layout and content which was specified as parameter.
      * @throws IOException 
@@ -47,6 +48,15 @@ public class TemplatingManagement {
 
     }
     
+    /**
+     * This method replace NavbarArea with suitable navbar content regarding user role. 
+     * @param template Template string which must include text '<!--login-->' 
+     * @param session Session is needed to figure out user role
+     * @param context Servlet context is needed for providing path to file which 
+     * include suitable navbar content.
+     * @return String with template with replaced navbar area
+     * @throws IOException 
+     */
     public static String populateNavbar(String template, HttpSession session, ServletContext context) throws IOException{
         LoginManagement lm = new LoginManagement(session);
         if(lm.isLoggedIn()){
