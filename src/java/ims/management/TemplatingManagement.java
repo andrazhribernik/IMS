@@ -54,7 +54,7 @@ public class TemplatingManagement {
      * @param session Session is needed to figure out user role
      * @param context Servlet context is needed for providing path to file which 
      * include suitable navbar content.
-     * @return String with template with replaced navbar area
+     * @return Template String with replaced navbar area
      * @throws IOException 
      */
     public static String populateNavbar(String template, HttpSession session, ServletContext context) throws IOException{

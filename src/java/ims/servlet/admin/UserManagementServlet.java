@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This sevlet shows a list of all users with their data.
  * @author andrazhribernik
  */
 @WebServlet(name = "UserManagementServlet", urlPatterns = {"/UserManagementServlet"})
@@ -27,7 +27,7 @@ public class UserManagementServlet extends HttpServlet {
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.
-     *
+     *Shows html table with users.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet handles user request for reseting of password
  * @author andrazhribernik
  */
 @WebServlet(name = "ResetPasswordRequestServlet", urlPatterns = {"/ResetPasswordRequest"})
@@ -32,7 +32,8 @@ public class ResetPasswordRequestServlet extends HttpServlet {
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.
-     *
+     *Add user request into database.
+     * 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,6 +62,7 @@ public class ResetPasswordRequestServlet extends HttpServlet {
             response.sendRedirect("./resetPasswordForm.jsp?message=Your request has been sent to administrator. We will respond to your email as soon as possible.");
             
         } catch (Exception ex) {
+            // username does not exist. Inform user about error
             response.sendRedirect("./resetPasswordForm.jsp?messageUsername=User with specified email does not exist.");
         } finally {            
             out.close();

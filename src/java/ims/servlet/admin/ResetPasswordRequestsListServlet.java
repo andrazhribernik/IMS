@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet shows a list of all users request for reset of their passwords. 
  * @author andrazhribernik
  */
 @WebServlet(name = "ResetPasswordRequestsListServlet", urlPatterns = {"/ResetPasswordRequestsList"})
@@ -29,7 +29,8 @@ public class ResetPasswordRequestsListServlet extends HttpServlet {
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.
-     *
+     *Show html table with user requests. First are shown requests which have not been
+     * processed.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs

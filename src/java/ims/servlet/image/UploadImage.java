@@ -30,26 +30,12 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 /**
- *
+ *This servlet allow contributor to upload a new image 
  * @author andrazhribernik
  */
 @WebServlet(name = "UploadImage", urlPatterns = {"/UploadImage"})
 public class UploadImage extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -64,7 +50,7 @@ public class UploadImage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        System.out.print("Upload image GET");
     }
 
     /**
@@ -82,64 +68,6 @@ public class UploadImage extends HttpServlet {
         
         LoginManagement lm = new LoginManagement(request.getSession());
         lm.userPermissionForThisPage(response, new String[]{"contributor"});
-        /*
-        //process only if its multipart content
-        if(ServletFileUpload.isMultipartContent(request)){
-            try {
-                Integer price;
-                List<FileItem> multiparts = new ServletFileUpload(
-                                         new DiskFileItemFactory()).parseRequest(request);
-              
-                for(FileItem item : multiparts){
-                    if(!item.isFormField()){
-                        String name = new File(item.getName()).getName();
-                        String imagePath = "Images"+File.separator+"300"+File.separator+lm.getUser().getUsername()+File.separator+name;
-                        ServletContext cntx= getServletContext();
-                        String filename = cntx.getRealPath(imagePath);
-                        
-                        System.out.println(filename);
-                        File newImage = new File(filename);
-                        System.out.println("Is permitted to write " +newImage.canWrite());
-                        System.out.println("Is permitted to read " +newImage.canRead());
-                        System.out.println("Is permitted to execute " +newImage.canExecute());
-                        
-                        if(!newImage.canWrite()){
-                            newImage.setWritable(true);
-                        }
-                        item.write( new File(filename));
-                    }
-                    else{
-                        if(item.getFieldName().equals("price")){
-                            
-                            try{
-                                Double inputPrice = Double.valueOf(item.getString());
-                                price = ((Double)(inputPrice.doubleValue() * 100)).intValue();
-                            }
-                            catch (Exception e){
-                                response.sendRedirect("./uploadImage.jsp?priceMessage=Incorect price format.");
-                                return;
-                            }
-                        }
-                    }
-                }
-           
-               
-            } catch (Exception ex) {
-               ex.printStackTrace();
-               response.sendRedirect("./uploadImage.jsp?fileMessage=File is not uploaded.");
-               return;
-            }          
-         
-        }else{
-            throw new ServerException("This Servlet only handles file upload request");
-        }
-
-        
-        
-        
-        
-        response.sendRedirect("./uploadImage.jsp?successMessage=You uploaded new image successfully.");
-        */
         
         // Verify the content type
         String contentType = request.getContentType();
@@ -175,6 +103,7 @@ public class UploadImage extends HttpServlet {
                     FileItem item = (FileItem)i.next();
                     if(!item.isFormField()){
                         name = new File(item.getName()).getName();
+                        //check if image with the same name exists
                         if(!im.isImageNameEmpty(name, lm.getUser())){
                             response.sendRedirect("./uploadImage.jsp?fileMessage=This image name already exists.");
                             return;
@@ -188,6 +117,7 @@ public class UploadImage extends HttpServlet {
                             extension = "png";
                         }
                         else{
+                            //if extension is not .png or .jpg inform user about an error.
                             response.sendRedirect("./uploadImage.jsp?fileMessage=Wrong file format.");
                             return;
                         }
@@ -207,6 +137,7 @@ public class UploadImage extends HttpServlet {
                             BufferedImage originalImage = ImageIO.read(item.getInputStream());
                             int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
                             BufferedImage resizeImagePng = ResizeImage.resizeImage(originalImage, type, Integer.valueOf(size));
+                            //save image to file system
                             ImageIO.write(resizeImagePng, extension, newImage);
                         }
                     }
@@ -224,6 +155,7 @@ public class UploadImage extends HttpServlet {
                         }
                     }
               }
+              //store new image into database with specified price
                 Image img = new Image();
                 img.setDate(new Date());
                 img.setName(name);

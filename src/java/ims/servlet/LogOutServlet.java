@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet destroys current user session. 
  * @author andrazhribernik
  */
 @WebServlet(name = "LogOutServlet", urlPatterns = {"/LogOutServlet"})
@@ -21,6 +21,7 @@ public class LogOutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
+     * This method set session attribute 'user' to null and redirect user to home page
      * <code>GET</code> and
      * <code>POST</code> methods.
      *

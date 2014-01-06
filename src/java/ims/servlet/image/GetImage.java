@@ -189,7 +189,7 @@ public class GetImage extends HttpServlet {
         //when we will implemet log in we will get user from session, othervise we will throw error.
             
         LoginManagement lm = new LoginManagement(request.getSession());
-        
+        //check if user is owner of selected image
         if(!lm.getUser().getImageSet().contains(img)){
             response.sendRedirect("./imageDetails.jsp?pass=true&imageId="+imageId);
             return;

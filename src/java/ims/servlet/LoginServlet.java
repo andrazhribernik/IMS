@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet handles user request for sign up.
  * @author andrazhribernik
  */
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
@@ -22,6 +22,10 @@ public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP
+     * Sign up user with specified username and password. 
+     * If username or password are correct user is redirected to index page and user data
+     * is stored to session, otherwise user gets message that credentials are incorrect. 
+     * 
      * <code>GET</code> and
      * <code>POST</code> methods.
      *

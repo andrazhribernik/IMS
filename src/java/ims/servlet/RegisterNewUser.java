@@ -19,27 +19,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet handles user request for creating new user account
  * @author andrazhribernik
  */
 @WebServlet(name = "RegisterNewUser", urlPatterns = {"/RegisterNewUser"})
 public class RegisterNewUser extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Method checks if the email is valid or not
+     * @param email email that you want to check
+     * @return True if email is valid
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-    }
-    
     private static boolean isValidEmailAddress(String email) {
         boolean result = true;
         try {
@@ -64,12 +54,15 @@ public class RegisterNewUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //empty method
+        System.out.print("Register user getRequest");
     }
 
     /**
      * Handles the HTTP
      * <code>POST</code> method.
+     * Create a new user if username does not exist in table with existing users 
+     * and if passwords match.
      *
      * @param request servlet request
      * @param response servlet response
@@ -94,14 +87,17 @@ public class RegisterNewUser extends HttpServlet {
         if(repassword == null){
             throw new ServletException("Parameter re-type password is not set");
         }
+        //if email is not valid redirect with message
         if(!isValidEmailAddress(username)){
             response.sendRedirect("./register.jsp?usernameMessage=Email is not valid email address.");
             return;
         }
+        //if password is too short redirect with message
         if(password.length() < 4){
             response.sendRedirect("./register.jsp?passwordMessage=Password must contain at least 4 characters.");
             return;
         }
+        //if passwords do not match redirect with message
         if(!password.equals(repassword)){
             response.sendRedirect("./register.jsp?rePasswordMessage=Passwords do not match.");
             return;
@@ -110,9 +106,11 @@ public class RegisterNewUser extends HttpServlet {
         UserManagement um = new UserManagement();
         try {
             um.getUserByUsername(username);
+            //if username already exists redirect with message
             response.sendRedirect("./register.jsp?usernameMessage=Username already exists.");
             return;
         } catch (Exception ex) {
+            //validation OK. Add new user, login user and redirect to home page
             um.addUser(username, password);
             LoginManagement lm = new LoginManagement(request.getSession(true));
             lm.logIn(username, password);

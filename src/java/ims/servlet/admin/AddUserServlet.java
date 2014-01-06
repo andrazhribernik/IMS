@@ -17,12 +17,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet handles admin request for adding new user into database.
  * @author andrazhribernik
  */
 @WebServlet(name = "AddUserServlet", urlPatterns = {"/AddUserServlet"})
 public class AddUserServlet extends HttpServlet {
 
+    /**
+     * This method return String which contains html code for addNewUser page. 
+     * @param usernameMessage error validation message for username
+     * @param passwordMessage error validation message for password
+     * @param successMessage success message
+     * @return String which contains html code for addNewUser page. 
+     */
     private String getContent(String usernameMessage, String passwordMessage, String successMessage){
         String content="<div class=\"panel panel-default\"><div class=\"panel-heading\"><h3>Add User</h3></div>";
         content += "<form method=\"POST\" class=\"form-horizontal\" role=\"form\">";
@@ -70,7 +77,7 @@ public class AddUserServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     *Show html form for adding new user.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -98,7 +105,7 @@ public class AddUserServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>POST</code> method.
-     *
+     *Handles admin request for adding new user. 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -122,13 +129,14 @@ public class AddUserServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
-            
+            //if username is to short inform admin about error
             if(username.length() < 4){
                 String content = getContent("Username must contain at least 4 characters.", null,null);
                 String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content, request.getSession());
                 out.print(result);
                 
             }
+            //if password is to short inform admin about error
             else if(password.length() < 4){
                 String content = getContent(null, "Password must contain at least 4 characters.",null);
                 String result = TemplatingManagement.getTemplateWithContent(this.getServletContext(),content, request.getSession());
@@ -136,6 +144,7 @@ public class AddUserServlet extends HttpServlet {
                 
             }
             else{
+                //add new user
                 UserManagement um = new UserManagement();
                 try {
                     um.getUserByUsername(username);

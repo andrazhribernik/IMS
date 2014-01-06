@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet handles admin request for processing user requests for reseting passwords
  * @author andrazhribernik
  */
 @WebServlet(name = "ResetPasswordServlet", urlPatterns = {"/ResetPassword"})
@@ -30,7 +30,7 @@ public class ResetPasswordServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     *Show html form for selected password reset user request.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -93,7 +93,7 @@ public class ResetPasswordServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>POST</code> method.
-     *
+     * This method stores new password for a user and inform user about it via email. 
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -127,6 +127,7 @@ public class ResetPasswordServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
+            //if password is too short inform admin about an error.
             if(password.length() < 4){
                 String content="<div class=\"panel panel-default\"><div class=\"panel-heading\">Reset Password</div>";
                 content += "<form method=\"POST\" class=\"form-horizontal\" role=\"form\">";

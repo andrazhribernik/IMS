@@ -115,6 +115,7 @@ public class PayPalReturnServlet extends HttpServlet {
             
             EntityManager em = Persistence.createEntityManagerFactory("web-jpaPU").createEntityManager();
             em.getTransaction().begin();
+            //adding image to set of purchased images.
             currentImage.getUserSet().add(lm.getUser());
             em.merge(currentImage);
             em.getTransaction().commit();

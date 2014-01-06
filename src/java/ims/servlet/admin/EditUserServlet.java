@@ -29,7 +29,7 @@ public class EditUserServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>GET</code> method.
-     *
+     * Show html form for editing selected user.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -103,7 +103,7 @@ public class EditUserServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>POST</code> method.
-     *
+     *Handles admin request for editing selected user.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -131,6 +131,7 @@ public class EditUserServlet extends HttpServlet {
         UserManagement um = new UserManagement();
         User user = um.getUserById(Integer.valueOf(userId));
         
+        //if password is to short inform admin about error.
         if(password.length() < 4){
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
@@ -179,6 +180,7 @@ public class EditUserServlet extends HttpServlet {
             }
         }
         else{
+            //edit selected user
             user.setPassword(password);
             user.setRoleidRole(um.getRoleById(Integer.valueOf(roleId)));
             um.editUser(user);

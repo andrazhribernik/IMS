@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *
+ *This servlet shows sales report of all images and profit of web page.
  * @author andrazhribernik
  */
 @WebServlet(name = "ReportServlet", urlPatterns = {"/ReportServlet"})
@@ -30,7 +30,7 @@ public class ReportServlet extends HttpServlet {
      * Processes requests for both HTTP
      * <code>GET</code> and
      * <code>POST</code> methods.
-     *
+     *  
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
